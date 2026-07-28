@@ -1,0 +1,16 @@
+name: sphere_2d
+description: Continuous 2D box for synthetic Sphere / Rastrigin PSO tests.
+input_shape: [1]
+num_classes: 2
+genes:
+  - name: x0
+    kind: float
+    low: -5.0
+    high: 5.0
+  - name: x1
+    kind: float
+    low: -5.0
+    high: 5.0
+metadata:
+  phase: 4
+  purpose: synthetic

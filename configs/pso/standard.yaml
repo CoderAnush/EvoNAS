@@ -1,0 +1,58 @@
+# Standard PSO — Phase 4 (fixed w, c1, c2 — NOT self-adaptive)
+run_id: pso_standard_quick
+seed: 42
+
+dataset:
+  config_path: configs/datasets/toy_quick.yaml
+
+search_space:
+  path: configs/search_spaces/cnn_quick.yaml
+
+optimization:
+  algorithm: pso
+  swarm_size: 6
+  max_iterations: 4
+  w: 0.729
+  c1: 1.49445
+  c2: 1.49445
+  velocity:
+    kappa: 0.2
+  init_velocity_scale: 0.2
+  initialization: random
+  checkpoint_every: 2
+  log_particles: true
+  target_fitness: null
+  max_no_improve: null
+
+data:
+  subset_fraction: 0.5
+  subset_seed: 42
+
+training:
+  epochs: 2
+  batch_size: 32
+  learning_rate: 0.001
+  optimizer: adam
+  device: cpu
+  seed: 42
+  early_stopping_patience: null
+  checkpoint_every: 1
+  num_workers: 0
+  shuffle_train: true
+
+fitness:
+  mode: architecture   # architecture | mock
+  sense: maximize
+  primary_metric: accuracy
+  weights:
+    accuracy: 1.0
+  penalties:
+    param_lambda: 0.0
+  fail_value: -1.0
+
+experiment:
+  artifacts_root: artifacts/optimization
+
+logging:
+  level: INFO
+  json: false

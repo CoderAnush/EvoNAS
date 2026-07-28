@@ -95,6 +95,31 @@ def build_parser() -> argparse.ArgumentParser:
         default="configs/models/baseline.yaml",
         help="Path to architecture YAML/JSON",
     )
+
+    opt = sub.add_parser(
+        "optimize",
+        help="Run Standard PSO architecture search (Phase 4 — fixed w/c1/c2)",
+    )
+    opt.add_argument(
+        "--config",
+        default="configs/pso/standard.yaml",
+        help="Path to PSO YAML config",
+    )
+    opt.add_argument(
+        "--out",
+        default=None,
+        help="Output artifacts directory (overrides config experiment.artifacts_root)",
+    )
+    opt.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Use mock fitness (no neural training)",
+    )
+    opt.add_argument(
+        "--verbose",
+        action="store_true",
+        help="Verbose progress logging",
+    )
     return parser
 
 
@@ -199,6 +224,20 @@ def main(argv: list[str] | None = None) -> int:
         }
         print(json.dumps(payload, indent=2))
         return 0 if result.ok else 1
+
+    if args.command == "optimize":
+        from evonas.application.optimize import OptimizeUseCase
+
+        if args.verbose:
+            logging.getLogger().setLevel(logging.DEBUG)
+        summary = OptimizeUseCase().run(
+            args.config,
+            output_dir=args.out,
+            dry_run=bool(args.dry_run),
+            verbose=bool(args.verbose),
+        )
+        print(json.dumps(summary, indent=2, default=str))
+        return 0
 
     if args.command in {"run", "replay"}:
         logger.warning(

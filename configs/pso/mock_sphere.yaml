@@ -1,0 +1,28 @@
+# Mock fitness PSO — unit/integration smoke (Sphere landscape, no NN training)
+run_id: pso_mock_sphere
+seed: 7
+
+search_space:
+  path: configs/search_spaces/sphere_2d.yaml
+
+optimization:
+  algorithm: pso
+  swarm_size: 12
+  max_iterations: 15
+  w: 0.729
+  c1: 1.49445
+  c2: 1.49445
+  kappa: 0.2
+  init_velocity_scale: 0.2
+  initialization: random
+  checkpoint_every: 5
+  log_particles: false
+  maximize: true
+
+fitness:
+  mode: mock
+  landscape: sphere
+  sense: maximize
+
+experiment:
+  artifacts_root: artifacts/optimization

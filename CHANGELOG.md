@@ -5,6 +5,29 @@ All notable changes to EvoNAS are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [v0.4.0] — 2026-07-28
+
+### Added
+
+- Standard Particle Swarm Optimization engine (Phase 4)
+- Domain modules: particle, swarm, velocity, position, initialization, stopping, history, cache, adapter
+- `StandardPSO` implementing `ISearchAlgorithm` with fixed \(w, c_1, c_2\)
+- `Fitness` / `FitnessCalculator` and `IFitnessEvaluator`
+- `MockFitnessEvaluator` (Sphere / Rastrigin) and `ArchitectureFitnessEvaluator`
+- Evaluation caching by `arch_id` + train-config hash
+- `OptimizeUseCase` with reproducible artifact export
+- CLI: `evonas optimize` (`--config`, `--out`, `--dry-run`, `--verbose`)
+- Configs: `configs/pso/standard.yaml`, `configs/pso/mock_sphere.yaml`
+- Search space: `configs/search_spaces/sphere_2d.yaml`
+- PSO visualization (matplotlib Agg, optional)
+- Optimization test suite
+- Phase 4 report and release notes
+
+### Notes
+
+- No Self-Adaptive PSO / adaptive coefficients in this release.
+- No closed-loop controller or continuous learning.
+
 ## [v0.3.0] — 2026-07-28
 
 ### Added
@@ -81,6 +104,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - No neural network training, PSO, or closed-loop controller in this release.
 - Production optimization engine remains SAPSO-only per `idea.md` (implemented in later phases).
 
+[v0.4.0]: https://github.com/CoderAnush/EvoNAS/releases/tag/v0.4.0
 [v0.3.0]: https://github.com/CoderAnush/EvoNAS/releases/tag/v0.3.0
 [v0.2.0]: https://github.com/CoderAnush/EvoNAS/releases/tag/v0.2.0
 [v0.1.0]: https://github.com/CoderAnush/EvoNAS/releases/tag/v0.1.0
