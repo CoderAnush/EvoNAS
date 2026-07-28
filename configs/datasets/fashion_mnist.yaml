@@ -1,0 +1,34 @@
+name: fashion_mnist
+version: "1.0.0"
+task_type: image_classification
+source: synthetic_fashion_mnist_like
+description: Fashion-MNIST-shaped synthetic placeholder for Phase 1.
+
+input_shape: [28, 28, 1]
+num_classes: 10
+num_samples: 1000
+dtype: float32
+
+splits:
+  train: 0.80
+  val: 0.10
+  test: 0.10
+
+seed: 42
+shuffle: true
+download: false
+
+transforms:
+  normalize: true
+  flatten: false
+
+statistics:
+  compute_on_prepare: true
+  feature_bins: 10
+
+drift:
+  psi_threshold: 0.25
+  ks_p_value: 0.01
+  feature_bins: 10
+
+manifest_dir: artifacts/datasets/fashion_mnist

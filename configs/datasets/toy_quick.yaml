@@ -1,0 +1,35 @@
+# Quick Mode toy dataset — synthetic by default (no download required for CI).
+name: toy_quick
+version: "1.0.0"
+task_type: image_classification
+source: synthetic
+description: Deterministic synthetic classification data for Quick Mode and CI.
+
+input_shape: [8, 8, 1]
+num_classes: 3
+num_samples: 300
+dtype: float32
+
+splits:
+  train: 0.70
+  val: 0.15
+  test: 0.15
+
+seed: 7
+shuffle: true
+download: false
+
+transforms:
+  normalize: true
+  flatten: false
+
+statistics:
+  compute_on_prepare: true
+  feature_bins: 10
+
+drift:
+  psi_threshold: 0.25
+  ks_p_value: 0.01
+  feature_bins: 10
+
+manifest_dir: artifacts/datasets/toy_quick

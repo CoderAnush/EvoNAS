@@ -9,9 +9,13 @@ build/
 .mypy_cache/
 .ruff_cache/
 .pytest_cache/
+.coverage
+htmlcov/
+coverage.xml
 
-# Project artifacts
+# Project artifacts / local outputs
 artifacts/
+*.log
 
 # Env / secrets
 .env

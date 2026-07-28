@@ -12,8 +12,8 @@ EvoNAS is an **autonomous AI lifecycle management platform** that continuously m
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?logo=python&logoColor=white)](https://www.python.org/)
-[![Status](https://img.shields.io/badge/Status-Specification%20Complete-orange)](idea.md)
-[![Version](https://img.shields.io/badge/Spec-v1.1.0-informational)](idea.md)
+[![Status](https://img.shields.io/badge/Status-Phase%201%20Frozen%20(v0.1.0)-brightgreen)](docs/phase_reports/phase1.md)
+[![Version](https://img.shields.io/badge/Version-v0.1.0-informational)](CHANGELOG.md)
 [![Research](https://img.shields.io/badge/Research-IEEE%20Oriented-0A66C2)](idea.md)
 [![AutoML](https://img.shields.io/badge/AutoML-Closed%20Loop-6f42c1)](idea.md)
 [![Deep Learning](https://img.shields.io/badge/Deep%20Learning-PyTorch%20%7C%20TensorFlow-EE4C2C)](idea.md)
@@ -410,15 +410,16 @@ EvoNAS/
 Implementation status tracks the Master Specification phases. Checklist items are **not started** unless checked.
 
 ### Phase 0 — Repository Foundation
-- [ ] Installable `evonas` package and CLI stub
-- [ ] Ports skeleton, config loader, logging, DI stub
-- [ ] Docker / CI scaffolding
+- [x] Installable `evonas` package and CLI stub
+- [x] Ports skeleton, config loader, logging, DI stub
+- [x] Docker / CI scaffolding
 - [x] Master Engineering Specification (`idea.md`)
 
 ### Phase 1 — Dataset Management
-- [ ] `IDatasetManager` + manifests + checksums
-- [ ] Splits, windows, drift utilities
-- [ ] Quick Mode toy dataset configs
+- [x] `IDatasetManager` + manifests + checksums
+- [x] Splits, windows, drift utilities
+- [x] Quick Mode toy dataset configs
+- [x] Phase 1 freeze report (`docs/phase_reports/phase1.md`)
 
 ### Phase 2 — Baseline Model
 - [ ] Fixed baseline ArchitectureSpec
@@ -522,8 +523,8 @@ Quick Mode is required to exercise the **real** controller, Decision Engine, and
 
 ## Installation
 
-> **Status:** The repository is in the **specification-complete / implementation-ongoing** stage.  
-> The public API surface below matches [`idea.md`](idea.md). Runnable package install will land with **Phase 0**.
+> **Status:** **Phase 1 frozen (v0.1.0).** Dataset management is implemented and tested.  
+> Later commands (`run` / `replay` closed-loop) remain planned per [`idea.md`](idea.md).
 
 ### Prerequisites (planned)
 
@@ -532,7 +533,7 @@ Quick Mode is required to exercise the **real** controller, Decision Engine, and
 - Optional: Docker / Docker Compose
 - Optional: CUDA-capable GPU for Research Mode
 
-### Planned install (after Phase 0)
+### Planned install
 
 ```bash
 git clone https://github.com/CoderAnush/EvoNAS.git
@@ -543,22 +544,16 @@ python -m venv .venv
 # Unix:    source .venv/bin/activate
 
 pip install -e ".[dev]"
-# Later extras (as implemented):
-# pip install -e ".[pytorch,api,dashboard,dev]"
+# Optional: pip install -e ".[pytorch,api,dashboard,dev]"
 ```
 
-### Verify (planned)
+### Verify
 
 ```bash
 evonas version
 evonas doctor
-```
-
-Until Phase 0 lands, the canonical project artifact is:
-
-```bash
-# Read the engineering bible
-# idea.md
+evonas prepare-dataset --config configs/datasets/toy_quick.yaml
+pytest -q
 ```
 
 ---
@@ -599,7 +594,8 @@ evonas api
 |---|---|
 | Master Engineering Specification | ✅ [`idea.md`](idea.md) |
 | Public overview | ✅ [`README.md`](README.md) |
-| Installable CLI / training loop | ⏳ Phase 0+ |
+| Installable CLI + dataset pipeline | ✅ Phase 0–1 (`v0.1.0`) |
+| Phase 1 freeze report | ✅ [`docs/phase_reports/phase1.md`](docs/phase_reports/phase1.md) |
 | Closed-loop Quick demo | ⏳ Phase 6+ |
 | Dashboard Replay | ⏳ Phase 9+ |
 
@@ -610,6 +606,9 @@ evonas api
 | Document | Status | Description |
 |---|---|---|
 | [`idea.md`](idea.md) | **Available** | Master Engineering Specification — sole source of truth |
+| [`CHANGELOG.md`](CHANGELOG.md) | **Available** | Version history |
+| [`docs/phase_reports/phase1.md`](docs/phase_reports/phase1.md) | **Available** | Phase 1 freeze report |
+| [`docs/RELEASE_NOTES_v0.1.0.md`](docs/RELEASE_NOTES_v0.1.0.md) | **Available** | v0.1.0 release notes |
 | `ROADMAP.md` | Coming Soon | Phase tracking derived from `idea.md` |
 | `ARCHITECTURE.md` | Coming Soon | Architecture digest for contributors |
 | `CONTRIBUTING.md` | Coming Soon | Contribution process and review standards |

@@ -1,0 +1,16 @@
+project:
+  name: EvoNAS
+  version: "0.1.0"
+seed: 42
+
+logging:
+  level: INFO
+  json: false
+
+dataset:
+  name: toy_quick
+  root: artifacts/datasets
+  download: false
+  config_path: configs/datasets/toy_quick.yaml
+
+artifacts_root: artifacts
