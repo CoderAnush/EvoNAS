@@ -1,0 +1,40 @@
+name: future_template
+version: "0.0.0"
+schema_version: "3.0"
+task_type: image_classification
+description: >
+  Template for future architectures (attention / transformers not wired yet).
+  Copy and edit layers; unsupported types will fail validation intentionally.
+
+input_shape: [8, 8, 1]
+num_classes: 3
+dropout: 0.0
+
+# Expandable layer IR — currently supported: dense, dropout, batch_norm,
+# layer_norm, activation, conv2d, max_pool2d, avg_pool2d, flatten, identity.
+# Future (declared but not yet buildable without validator expansion):
+# attention, transformer_block.
+layers:
+  - type: conv2d
+    params: { out_channels: 16, kernel: 3, stride: 1, padding: 1 }
+  - type: batch_norm
+    params: {}
+  - type: activation
+    params: { name: gelu }
+  - type: max_pool2d
+    params: { kernel: 2, stride: 2 }
+  - type: flatten
+    params: {}
+  - type: dense
+    params: { units: 64 }
+  - type: activation
+    params: { name: relu }
+  - type: dropout
+    params: { rate: 0.2 }
+  - type: dense
+    params: { units: 3 }
+
+metadata:
+  family: template
+  phase: 3
+  notes: placeholder for Phase 4+ PSO-generated architectures

@@ -1,0 +1,38 @@
+name: baseline
+version: "1.0.0"
+schema_version: "3.0"
+task_type: image_classification
+description: Phase 3 baseline CNN expressed as explicit layer IR (equivalent to Phase 2).
+
+input_shape: [8, 8, 1]
+num_classes: 3
+dropout: 0.1
+
+layers:
+  - type: conv2d
+    params: { out_channels: 16, kernel: 3, stride: 1, padding: 1, bias: true }
+  - type: activation
+    params: { name: relu }
+  - type: max_pool2d
+    params: { kernel: 2, stride: 2 }
+  - type: conv2d
+    params: { out_channels: 32, kernel: 3, stride: 1, padding: 1, bias: true }
+  - type: activation
+    params: { name: relu }
+  - type: max_pool2d
+    params: { kernel: 2, stride: 2 }
+  - type: flatten
+    params: {}
+  - type: dense
+    params: { units: 64, bias: true }
+  - type: activation
+    params: { name: relu }
+  - type: dropout
+    params: { rate: 0.1 }
+  - type: dense
+    params: { units: 3, bias: true }
+
+metadata:
+  family: baseline_cnn
+  phase: 3
+  source: configs/models/baseline.yaml

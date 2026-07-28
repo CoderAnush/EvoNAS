@@ -5,6 +5,36 @@ All notable changes to EvoNAS are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [v0.3.0] — 2026-07-28
+
+### Added
+
+- Dynamic model generation framework (Phase 3)
+- Expandable `LayerSpec` IR and `ArchitectureSpec.resolved_layers()`
+- `ArchitectureSerializer` (JSON / YAML / dict) with schema versioning
+- `ArchitectureValidator`, `ConstraintHandler`, `ArchitectureFactory`
+- `SearchSpace` / `GeneSpec` and `ArchitectureGenerator` encode/decode
+- Complexity estimator and text `ArchitectureVisualizer`
+- `DynamicNetwork` PyTorch builder driven entirely by architecture IR
+- Ports: `IArchitectureGenerator`, `IConstraintHandler`
+- Configs: `configs/models/baseline.yaml`, `future_template.yaml`
+- Search spaces: `configs/search_spaces/cnn_quick.yaml`, `cnn_small.yaml`
+- CLI: `evonas build-model`, `inspect-model`, `validate-model`
+- Architecture test suite including 100-genotype 1-epoch smoke (≥95%)
+- Phase 3 report and release notes
+
+### Changed
+
+- `PyTorchModelBuilder` now builds `DynamicNetwork` (no BaselineCNN dependency)
+- `ModelFactory` validates architectures before build
+- Package version bumped to **0.3.0**
+
+### Notes
+
+- No PSO / NAS / closed-loop behavior in this release.
+- Phase 2 training APIs and YAML remain backward compatible.
+- `BaselineCNN` retained as a historical reference module only.
+
 ## [v0.2.0] — 2026-07-28
 
 ### Added
@@ -51,5 +81,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - No neural network training, PSO, or closed-loop controller in this release.
 - Production optimization engine remains SAPSO-only per `idea.md` (implemented in later phases).
 
+[v0.3.0]: https://github.com/CoderAnush/EvoNAS/releases/tag/v0.3.0
 [v0.2.0]: https://github.com/CoderAnush/EvoNAS/releases/tag/v0.2.0
 [v0.1.0]: https://github.com/CoderAnush/EvoNAS/releases/tag/v0.1.0

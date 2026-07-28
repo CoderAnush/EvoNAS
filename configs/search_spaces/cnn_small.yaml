@@ -1,0 +1,41 @@
+name: cnn_small
+description: Slightly wider Quick Mode space for Phase 3 property tests.
+input_shape: [8, 8, 1]
+num_classes: 3
+genes:
+  - name: n_blocks
+    kind: int
+    low: 1
+    high: 3
+  - name: ch0
+    kind: int
+    low: 8
+    high: 48
+    step: 8
+  - name: ch1
+    kind: int
+    low: 8
+    high: 48
+    step: 8
+  - name: ch2
+    kind: int
+    low: 8
+    high: 48
+    step: 8
+  - name: act
+    kind: cat
+    low: 0.0
+    high: 1.0
+    choices: [relu, gelu, tanh]
+  - name: dropout
+    kind: float
+    low: 0.0
+    high: 0.5
+  - name: dense_units
+    kind: int
+    low: 16
+    high: 128
+    step: 16
+metadata:
+  phase: 3
+  mode: small

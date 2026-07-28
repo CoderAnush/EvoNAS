@@ -6,6 +6,8 @@ import logging
 from pathlib import Path
 from typing import Any
 
+from evonas.domain.architecture.constraints import ArchitectureValidator
+from evonas.domain.architecture.serializer import ArchitectureSerializer
 from evonas.domain.common.errors import ConfigError
 from evonas.domain.model.architecture_spec import ArchitectureSpec
 from evonas.infrastructure.config.manager import ConfigurationManager
@@ -19,6 +21,7 @@ class ModelFactory:
     """Create models from ArchitectureSpec or YAML config paths.
 
     Future phases reuse this factory; new families register additional builders.
+    Architectures are validated before build (Phase 3).
     """
 
     def __init__(
@@ -27,12 +30,16 @@ class ModelFactory:
         builders: dict[str, IModelBuilder] | None = None,
         config_manager: ConfigurationManager | None = None,
         default_backend: str = "pytorch",
+        validator: ArchitectureValidator | None = None,
+        serializer: ArchitectureSerializer | None = None,
     ) -> None:
         self._config_manager = config_manager or ConfigurationManager()
         self._builders: dict[str, IModelBuilder] = builders or {
             "pytorch": PyTorchModelBuilder(),
         }
         self._default_backend = default_backend
+        self._validator = validator or ArchitectureValidator()
+        self._serializer = serializer or ArchitectureSerializer()
 
     def register_builder(self, backend: str, builder: IModelBuilder) -> None:
         """Register or replace a backend builder."""
@@ -54,7 +61,8 @@ class ModelFactory:
             else:
                 data = data["model"]
         try:
-            return ArchitectureSpec.from_dict(data)
+            spec = self._serializer.from_dict(data)
+            return self._validator.require_valid(spec)
         except Exception as exc:  # noqa: BLE001
             raise ConfigError(f"invalid architecture config: {exc}", code="EN_CFG_001") from exc
 

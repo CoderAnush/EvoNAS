@@ -1,0 +1,36 @@
+name: cnn_quick
+description: Quick Mode CNN search space (Phase 3 decode only — no PSO).
+input_shape: [8, 8, 1]
+num_classes: 3
+genes:
+  - name: n_blocks
+    kind: int
+    low: 1
+    high: 2
+  - name: ch0
+    kind: int
+    low: 8
+    high: 32
+    step: 8
+  - name: ch1
+    kind: int
+    low: 8
+    high: 32
+    step: 8
+  - name: act
+    kind: cat
+    low: 0.0
+    high: 1.0
+    choices: [relu, gelu]
+  - name: dropout
+    kind: float
+    low: 0.0
+    high: 0.4
+  - name: dense_units
+    kind: int
+    low: 16
+    high: 64
+    step: 16
+metadata:
+  phase: 3
+  mode: quick

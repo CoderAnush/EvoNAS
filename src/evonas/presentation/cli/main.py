@@ -1,4 +1,4 @@
-"""EvoNAS CLI — Phase 0–2 commands (idea.md)."""
+"""EvoNAS CLI — Phase 0–3 commands (idea.md)."""
 
 from __future__ import annotations
 
@@ -55,7 +55,55 @@ def build_parser() -> argparse.ArgumentParser:
         default="configs/training/baseline.yaml",
         help="Path to baseline training YAML",
     )
+
+    build_m = sub.add_parser(
+        "build-model",
+        help="Build a PyTorch model from an architecture YAML/JSON (no training)",
+    )
+    build_m.add_argument(
+        "--config",
+        default="configs/models/baseline.yaml",
+        help="Path to architecture YAML/JSON",
+    )
+    build_m.add_argument(
+        "--out",
+        default=None,
+        help="Optional path to save architecture summary text",
+    )
+
+    inspect_m = sub.add_parser(
+        "inspect-model",
+        help="Print a text diagram of an architecture YAML/JSON",
+    )
+    inspect_m.add_argument(
+        "--config",
+        default="configs/models/baseline.yaml",
+        help="Path to architecture YAML/JSON",
+    )
+    inspect_m.add_argument(
+        "--out",
+        default=None,
+        help="Optional path to export the summary",
+    )
+
+    validate_m = sub.add_parser(
+        "validate-model",
+        help="Validate an architecture YAML/JSON against Phase 3 constraints",
+    )
+    validate_m.add_argument(
+        "--config",
+        default="configs/models/baseline.yaml",
+        help="Path to architecture YAML/JSON",
+    )
     return parser
+
+
+def _load_architecture(path: str):
+    from evonas.domain.architecture.factory import ArchitectureFactory
+
+    return ArchitectureFactory().from_yaml(path) if path.endswith(
+        (".yaml", ".yml")
+    ) else ArchitectureFactory().from_json(path)
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -100,6 +148,57 @@ def main(argv: list[str] | None = None) -> int:
         summary = TrainBaselineUseCase().run(args.config)
         print(json.dumps(summary, indent=2))
         return 0
+
+    if args.command == "build-model":
+        from evonas.domain.architecture.complexity import estimate_complexity
+        from evonas.domain.architecture.visualization import ArchitectureVisualizer
+        from evonas.infrastructure.training.model_factory import ModelFactory
+
+        model, spec = ModelFactory().create(args.config)
+        report = estimate_complexity(spec)
+        diagram = ArchitectureVisualizer().summarize(spec)
+        if args.out:
+            ArchitectureVisualizer().export_text(spec, args.out)
+        print(diagram)
+        print(
+            json.dumps(
+                {
+                    "name": spec.name,
+                    "arch_id": spec.arch_id(),
+                    "params": ModelFactory().builder().count_parameters(model),
+                    "complexity": report.to_dict(),
+                },
+                indent=2,
+            )
+        )
+        return 0
+
+    if args.command == "inspect-model":
+        from evonas.domain.architecture.visualization import ArchitectureVisualizer
+
+        spec = _load_architecture(args.config)
+        viz = ArchitectureVisualizer()
+        text = viz.export_text(spec, args.out) if args.out else viz.summarize(spec)
+        print(text)
+        return 0
+
+    if args.command == "validate-model":
+        from evonas.domain.architecture.constraints import ArchitectureValidator
+        from evonas.domain.architecture.serializer import ArchitectureSerializer
+
+        path = Path(args.config)
+        spec = ArchitectureSerializer().load(path)
+        result = ArchitectureValidator().validate(spec)
+        payload = {
+            "ok": result.ok,
+            "errors": list(result.errors),
+            "warnings": list(result.warnings),
+            "name": spec.name,
+            "arch_id": spec.arch_id() if result.ok or spec.name else None,
+            "depth": spec.depth,
+        }
+        print(json.dumps(payload, indent=2))
+        return 0 if result.ok else 1
 
     if args.command in {"run", "replay"}:
         logger.warning(

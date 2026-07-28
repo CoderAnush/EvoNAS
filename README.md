@@ -12,8 +12,8 @@ EvoNAS is an **autonomous AI lifecycle management platform** that continuously m
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?logo=python&logoColor=white)](https://www.python.org/)
-[![Status](https://img.shields.io/badge/Status-Phase%202%20Complete%20(v0.2.0)-brightgreen)](docs/phase_reports/phase2.md)
-[![Version](https://img.shields.io/badge/Version-v0.2.0-informational)](CHANGELOG.md)
+[![Status](https://img.shields.io/badge/Status-Phase%203%20Complete%20(v0.3.0)-brightgreen)](docs/phase_reports/phase3.md)
+[![Version](https://img.shields.io/badge/Version-v0.3.0-informational)](CHANGELOG.md)
 [![Research](https://img.shields.io/badge/Research-IEEE%20Oriented-0A66C2)](idea.md)
 [![AutoML](https://img.shields.io/badge/AutoML-Closed%20Loop-6f42c1)](idea.md)
 [![Deep Learning](https://img.shields.io/badge/Deep%20Learning-PyTorch%20%7C%20TensorFlow-EE4C2C)](idea.md)
@@ -428,9 +428,11 @@ Implementation status tracks the Master Specification phases. Checklist items ar
 - [x] Phase 2 freeze report (`docs/phase_reports/phase2.md`)
 
 ### Phase 3 — Dynamic Neural Network Generator
-- [ ] Search space schema + genotype decode/encode
-- [ ] Constraint repair + complexity estimates
-- [ ] Framework-agnostic Architecture IR
+- [x] Search space schema + genotype decode/encode
+- [x] Constraint repair + complexity estimates
+- [x] Framework-agnostic Architecture IR
+- [x] Dynamic PyTorch builder + CLI tooling
+- [x] Phase 3 freeze report (`docs/phase_reports/phase3.md`)
 
 ### Phase 4 — Standard PSO Engine
 - [ ] Classical PSO implementing `ISearchAlgorithm`
@@ -597,7 +599,8 @@ evonas api
 | Public overview | ✅ [`README.md`](README.md) |
 | Installable CLI + dataset pipeline | ✅ Phase 0–1 (`v0.1.0`) |
 | Baseline train / eval / checkpoints | ✅ Phase 2 (`v0.2.0`) |
-| Phase reports | ✅ `docs/phase_reports/phase{1,2}.md` |
+| Dynamic architecture → model builder | ✅ Phase 3 (`v0.3.0`) |
+| Phase reports | ✅ `docs/phase_reports/phase{1,2,3}.md` |
 | Closed-loop Quick demo | ⏳ Phase 6+ |
 | Dashboard Replay | ⏳ Phase 9+ |
 
@@ -610,7 +613,9 @@ evonas api
 | [`idea.md`](idea.md) | **Available** | Master Engineering Specification — sole source of truth |
 | [`CHANGELOG.md`](CHANGELOG.md) | **Available** | Version history |
 | [`docs/phase_reports/phase2.md`](docs/phase_reports/phase2.md) | **Available** | Phase 2 baseline training report |
+| [`docs/phase_reports/phase3.md`](docs/phase_reports/phase3.md) | **Available** | Phase 3 dynamic model generation report |
 | [`docs/RELEASE_NOTES_v0.2.0.md`](docs/RELEASE_NOTES_v0.2.0.md) | **Available** | v0.2.0 release notes |
+| [`docs/RELEASE_NOTES_v0.3.0.md`](docs/RELEASE_NOTES_v0.3.0.md) | **Available** | v0.3.0 release notes |
 | `ROADMAP.md` | Coming Soon | Phase tracking derived from `idea.md` |
 | `ARCHITECTURE.md` | Coming Soon | Architecture digest for contributors |
 | `CONTRIBUTING.md` | Coming Soon | Contribution process and review standards |
