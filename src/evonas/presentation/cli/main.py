@@ -1,8 +1,9 @@
-"""Minimal CLI surface for Phase 0/1 (idea.md)."""
+"""EvoNAS CLI — Phase 0–2 commands (idea.md)."""
 
 from __future__ import annotations
 
 import argparse
+import json
 import logging
 from pathlib import Path
 
@@ -37,6 +38,23 @@ def build_parser() -> argparse.ArgumentParser:
         default="configs/datasets/toy_quick.yaml",
         help="Path to dataset YAML config",
     )
+
+    train = sub.add_parser("train", help="Train a model from a training YAML config")
+    train.add_argument(
+        "--config",
+        default="configs/training/baseline.yaml",
+        help="Path to training YAML (default: baseline)",
+    )
+
+    train_b = sub.add_parser(
+        "train-baseline",
+        help="Train the Phase 2 baseline model (alias of train with baseline config)",
+    )
+    train_b.add_argument(
+        "--config",
+        default="configs/training/baseline.yaml",
+        help="Path to baseline training YAML",
+    )
     return parser
 
 
@@ -58,6 +76,12 @@ def main(argv: list[str] | None = None) -> int:
         print(f"evonas {__version__}")
         print(f"cwd ok: {Path('.').resolve()}")
         print(f"configs present: {(Path('configs') / 'default.yaml').exists()}")
+        try:
+            import torch
+
+            print(f"torch: {torch.__version__}")
+        except ImportError:
+            print("torch: not installed (pip install 'evonas[pytorch]')")
         return 0
 
     if args.command == "prepare-dataset":
@@ -68,6 +92,13 @@ def main(argv: list[str] | None = None) -> int:
         print(f"prepared dataset={manager.name}")
         print(f"schema={schema.name}@{schema.version} shape={schema.input_shape}")
         print(f"raw_features_checksum={checksums['raw_features']}")
+        return 0
+
+    if args.command in {"train", "train-baseline"}:
+        from evonas.application.train_baseline import TrainBaselineUseCase
+
+        summary = TrainBaselineUseCase().run(args.config)
+        print(json.dumps(summary, indent=2))
         return 0
 
     if args.command in {"run", "replay"}:

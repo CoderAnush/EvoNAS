@@ -1,0 +1,27 @@
+# Tiny overfit-oriented config for tests / quick smoke.
+run_id: baseline_overfit_smoke
+seed: 7
+
+dataset:
+  config_path: configs/datasets/toy_quick.yaml
+
+model:
+  architecture_path: configs/models/baseline_cnn.yaml
+  align_with_dataset: true
+  backend: pytorch
+
+data:
+  subset_fraction: 0.2
+  subset_seed: 7
+
+training:
+  epochs: 15
+  batch_size: 16
+  learning_rate: 0.01
+  optimizer: adam
+  device: cpu
+  seed: 7
+  early_stopping_patience: null
+  checkpoint_every: 5
+  num_workers: 0
+  shuffle_train: true

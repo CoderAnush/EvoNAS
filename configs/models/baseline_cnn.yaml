@@ -1,0 +1,27 @@
+name: baseline_cnn
+version: "1.0.0"
+task_type: image_classification
+description: Fixed Phase 2 baseline CNN — not searched, not evolved.
+
+# Default shape; training use-case aligns these with the active dataset schema.
+input_shape: [8, 8, 1]
+num_classes: 3
+
+conv_blocks:
+  - out_channels: 16
+    kernel: 3
+    stride: 1
+    activation: relu
+    pool: 2
+  - out_channels: 32
+    kernel: 3
+    stride: 1
+    activation: relu
+    pool: 2
+
+dense_units: [64]
+dropout: 0.1
+
+metadata:
+  family: baseline_cnn
+  phase: 2

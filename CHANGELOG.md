@@ -5,6 +5,28 @@ All notable changes to EvoNAS are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [v0.2.0] — 2026-07-28
+
+### Added
+
+- Baseline learning system (Phase 2)
+- `ArchitectureSpec` / `ConvBlockSpec` domain IR
+- `ITrainableModel`, `IModelBuilder`, `ITrainingEngine`, `IEvaluationEngine`, `ICheckpointManager`
+- `BaselineCNN` + `PyTorchModelBuilder` + `ModelFactory`
+- `PyTorchTrainingEngine` with epoch loop, validation, early-stopping hook, checkpoints
+- `PyTorchEvaluationEngine` with accuracy / precision / recall / F1 / confusion matrix
+- Reusable domain metrics module
+- `FileCheckpointManager`, `ArtifactManager`, `ExperimentRecorder`
+- Training YAML: `configs/training/baseline.yaml`, `configs/models/baseline_cnn.yaml`
+- CLI: `evonas train`, `evonas train-baseline`
+- Phase 2 report and release notes
+- Expanded test suite (**40 passing**)
+
+### Notes
+
+- No PSO / NAS / closed-loop behavior in this release.
+- TensorFlow trainer remains deferred; ports allow a future adapter.
+
 ## [v0.1.0] — 2026-07-28
 
 ### Added
@@ -29,4 +51,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - No neural network training, PSO, or closed-loop controller in this release.
 - Production optimization engine remains SAPSO-only per `idea.md` (implemented in later phases).
 
+[v0.2.0]: https://github.com/CoderAnush/EvoNAS/releases/tag/v0.2.0
 [v0.1.0]: https://github.com/CoderAnush/EvoNAS/releases/tag/v0.1.0

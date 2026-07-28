@@ -1,0 +1,31 @@
+# Phase 2 baseline training run — all knobs configured (nothing hardcoded in code paths).
+run_id: baseline_v1
+seed: 42
+
+dataset:
+  config_path: configs/datasets/toy_quick.yaml
+
+model:
+  architecture_path: configs/models/baseline_cnn.yaml
+  align_with_dataset: true
+  backend: pytorch
+
+data:
+  subset_fraction: 1.0
+  subset_seed: 42
+
+training:
+  epochs: 8
+  batch_size: 32
+  learning_rate: 0.001
+  optimizer: adam
+  weight_decay: 0.0
+  device: cpu
+  seed: 42
+  early_stopping_patience: null
+  checkpoint_every: 1
+  num_workers: 0
+  shuffle_train: true
+
+artifacts:
+  root: artifacts/baselines
