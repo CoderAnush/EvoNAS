@@ -114,10 +114,10 @@ flowchart LR
   D -->|No Action| O
   Z --> R[Retrain]
   R --> V[Validate]
-  V --> D2[Decide Deploy?]
+  V --> D2["Decide Deploy"]
   D2 -->|Yes| P[Deploy]
   D2 -->|No| O
-  P --> M[Monitor / Soak]
+  P --> M["Monitor Soak"]
   M -->|Healthy| O
   M -->|Unhealthy| RB[Rollback]
   RB --> O
@@ -200,34 +200,34 @@ EvoNAS follows **Clean Architecture**, **SOLID**, and **Dependency Injection**. 
 flowchart TB
   subgraph Presentation
     CLI[CLI]
-    API[FastAPI Control Plane]
-    UI[Streamlit Dashboard]
+    API["FastAPI Control Plane"]
+    UI["Streamlit Dashboard"]
   end
 
   subgraph Application
-    CLC[Closed-Loop Controller]
-    Modes[Research / Quick / Replay]
-    DI[DI Container]
+    CLC["Closed-Loop Controller"]
+    Modes["Research Quick Replay"]
+    DI["DI Container"]
   end
 
   subgraph Domain
-    DE[Decision Engine]
-    OT[Optimization Trigger]
-    SAPSO[Self-Adaptive PSO]
-    AG[Architecture Generator]
-    FIT[Fitness Calculator]
-    SEL[Model Selector]
-    CLE[Continuous Learning]
-    MON[Performance Monitor]
+    DE["Decision Engine"]
+    OT["Optimization Trigger"]
+    SAPSO["Self-Adaptive PSO"]
+    AG["Architecture Generator"]
+    FIT["Fitness Calculator"]
+    SEL["Model Selector"]
+    CLE["Continuous Learning"]
+    MON["Performance Monitor"]
   end
 
   subgraph Infrastructure
-    DATA[Dataset Adapters]
-    TR[Training Backends]
-    EV[Evaluation Adapters]
-    REG[Model Registry Store]
-    DEP[Deploy / Rollback]
-    EXP[Experiment Store]
+    DATA["Dataset Adapters"]
+    TR["Training Backends"]
+    EV["Evaluation Adapters"]
+    REG["Model Registry Store"]
+    DEP["Deploy Rollback"]
+    EXP["Experiment Store"]
     CKPT[Checkpoints]
     MET[Metrics]
     VIS[Visualization]
@@ -306,25 +306,19 @@ sequenceDiagram
   participant DE as Decision Engine
   participant CLC as Closed-Loop Controller
   participant SAPSO as Self-Adaptive PSO
-  participant TE as Training / Eval
-  participant DM as Deploy / Rollback
+  participant TE as Training and Eval
+  participant DM as Deploy and Rollback
 
-  PM->>DE: Degradation / Drift context
-  DE->>CLC: START_OPTIMIZATION?
-  alt authorized
-    CLC->>SAPSO: run(budget)
-    loop particle evaluations
-      SAPSO->>TE: decode → train → evaluate → fitness
-    end
-    SAPSO->>DE: champion proposal
-    DE->>CLC: DEPLOY?
-    alt deploy yes
-      CLC->>DM: promote + soak
-      opt soak fail
-        DE->>DM: ROLLBACK to LKG
-      end
-    end
+  PM->>DE: Degradation or Drift context
+  DE->>CLC: START_OPTIMIZATION
+  CLC->>SAPSO: run budget
+  loop particle evaluations
+    SAPSO->>TE: decode train evaluate fitness
   end
+  SAPSO->>DE: champion proposal
+  DE->>CLC: DEPLOY decision
+  CLC->>DM: promote and soak
+  DE->>DM: ROLLBACK to LKG if soak fails
 ```
 
 ```mermaid
@@ -483,18 +477,18 @@ Implementation status tracks the Master Specification phases. Checklist items ar
 
 ```mermaid
 flowchart LR
-  P0[0 Foundation] --> P1[1 Data]
-  P1 --> P2[2 Baseline]
-  P2 --> P3[3 Arch Gen]
-  P3 --> P4[4 PSO]
-  P4 --> P5[5 SAPSO]
-  P5 --> P6[6 Closed Loop]
-  P6 --> P7[7 Continuous]
-  P7 --> P8[8 Deploy]
-  P8 --> P9[9 Dashboard]
-  P6 --> P10[10 Experiments]
-  P8 --> P11[11 Registry]
-  P10 --> P12[12 Research]
+  P0["0 Foundation"] --> P1["1 Data"]
+  P1 --> P2["2 Baseline"]
+  P2 --> P3["3 Arch Gen"]
+  P3 --> P4["4 PSO"]
+  P4 --> P5["5 SAPSO"]
+  P5 --> P6["6 Closed Loop"]
+  P6 --> P7["7 Continuous"]
+  P7 --> P8["8 Deploy"]
+  P8 --> P9["9 Dashboard"]
+  P6 --> P10["10 Experiments"]
+  P8 --> P11["11 Registry"]
+  P10 --> P12["12 Research"]
   P11 --> P12
 ```
 
@@ -512,13 +506,13 @@ EvoNAS defines three first-class modes:
 
 ```mermaid
 flowchart TB
-  START[evonas run / replay] --> M{Mode}
-  M -->|research| R[Full SAPSO + train + artifacts]
-  M -->|quick| Q[Reduced budgets · still real loop]
-  M -->|replay| P[Load artifacts only · no Training Engine]
+  START["evonas run or replay"] --> M{Mode}
+  M -->|research| R["Full SAPSO train artifacts"]
+  M -->|quick| Q["Reduced budgets still real loop"]
+  M -->|replay| P["Load artifacts only no Training Engine"]
   R --> ART[Experiment Store]
   Q --> ART
-  P --> VIS[Dashboard / Figures]
+  P --> VIS["Dashboard Figures"]
   ART --> VIS
 ```
 
