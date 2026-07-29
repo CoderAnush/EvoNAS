@@ -12,8 +12,8 @@ EvoNAS is an **autonomous AI lifecycle management platform** that continuously m
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?logo=python&logoColor=white)](https://www.python.org/)
-[![Status](https://img.shields.io/badge/Status-Phase%209%20Platform%20(v0.9.0)-brightgreen)](docs/phase_reports/phase9.md)
-[![Version](https://img.shields.io/badge/Version-v0.9.0-informational)](CHANGELOG.md)
+[![Status](https://img.shields.io/badge/Status-v1.0.0--rc1%20Research-brightgreen)](docs/phase_reports/phase10.md)
+[![Version](https://img.shields.io/badge/Version-v1.0.0--rc1-informational)](CHANGELOG.md)
 [![Research](https://img.shields.io/badge/Research-IEEE%20Oriented-0A66C2)](idea.md)
 [![AutoML](https://img.shields.io/badge/AutoML-Closed%20Loop-6f42c1)](idea.md)
 [![Deep Learning](https://img.shields.io/badge/Deep%20Learning-PyTorch%20%7C%20TensorFlow-EE4C2C)](idea.md)
@@ -473,10 +473,12 @@ Implementation status tracks the Master Specification phases. Checklist items ar
 - [x] Phase 9 report (`docs/phase_reports/phase9.md`)
 - [ ] Cloud adapters / auth / K8s (deferred)
 
-### Phase 10 — Experiment Tracking
-- [ ] Experiment index, compare, export
-- [ ] Paper table export scripts
-- [ ] Replay fidelity guarantees
+### Phase 10 — Scientific Evaluation & Experiments
+- [x] ExperimentOrchestrator + multi-seed matrix
+- [x] Fair PSO / SAPSO / Random Search benchmarks
+- [x] Statistics, publication figures/tables, research reports
+- [x] CLI `benchmark` / `experiment` / `compare` / `report`
+- [x] Phase 10 report (`docs/phase_reports/phase10.md`)
 
 ### Phase 11 — Model Registry
 - [ ] Versioning, stages, lineage
@@ -618,8 +620,9 @@ docker compose up --build
 | Continuous learning / data evolution | ✅ Phase 7 (`v0.7.0`) |
 | AI Operations Dashboard (Streamlit) | ✅ Phase 8 (`v0.8.0`) |
 | FastAPI + Docker platform services | ✅ Phase 9 (`v0.9.0`) |
-| Phase reports | ✅ `docs/phase_reports/phase{1..9}.md` |
-| Cloud / auth | ⏳ post-v1.0 |
+| Scientific evaluation / benchmarks | ✅ Phase 10 (`v1.0.0-rc1`) |
+| Phase reports | ✅ `docs/phase_reports/phase{1..10}.md` |
+| Cloud / auth / model registry | ⏳ later |
 
 ---
 
@@ -637,7 +640,9 @@ docker compose up --build
 | [`docs/phase_reports/phase7.md`](docs/phase_reports/phase7.md) | **Available** | Phase 7 continuous learning report |
 | [`docs/phase_reports/phase8.md`](docs/phase_reports/phase8.md) | **Available** | Phase 8 AI Operations Dashboard |
 | [`docs/phase_reports/phase9.md`](docs/phase_reports/phase9.md) | **Available** | Phase 9 platform services |
-| [`docs/RELEASE_NOTES_v0.9.0.md`](docs/RELEASE_NOTES_v0.9.0.md) | **Available** | v0.9.0 release notes |
+| [`docs/phase_reports/phase10.md`](docs/phase_reports/phase10.md) | **Available** | Phase 10 scientific evaluation |
+| [`docs/RELEASE_NOTES_v1.0.0-rc1.md`](docs/RELEASE_NOTES_v1.0.0-rc1.md) | **Available** | v1.0.0-rc1 release notes |
+| [`docs/research/protocol.md`](docs/research/protocol.md) | **Available** | Experimental protocol |
 | [`docs/ops/DEPLOYMENT.md`](docs/ops/DEPLOYMENT.md) | **Available** | Local / Docker deploy guide |
 | [`docs/ops/API_REFERENCE.md`](docs/ops/API_REFERENCE.md) | **Available** | REST API reference |
 | [`docs/RELEASE_NOTES_v0.8.0.md`](docs/RELEASE_NOTES_v0.8.0.md) | **Available** | v0.8.0 release notes |

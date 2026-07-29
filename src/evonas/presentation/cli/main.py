@@ -291,6 +291,54 @@ def build_parser() -> argparse.ArgumentParser:
         default=None,
         help="Output artifacts directory",
     )
+
+    bench = sub.add_parser(
+        "benchmark",
+        help="Run scientific benchmark suite (Phase 10)",
+    )
+    bench.add_argument(
+        "--config",
+        default="configs/benchmarks/default.yaml",
+        help="Benchmark suite YAML",
+    )
+    bench.add_argument("--out", default=None, help="Output artifacts directory")
+    bench.add_argument(
+        "--dry-run",
+        action="store_true",
+        default=True,
+        help="Use mock fitness (default true for research CI)",
+    )
+
+    exp = sub.add_parser("experiment", help="List/show research experiments (Phase 10)")
+    exp_sub = exp.add_subparsers(dest="experiment_command")
+    exp_list = exp_sub.add_parser("list", help="List registered experiments")
+    exp_list.add_argument("--limit", type=int, default=50)
+    exp_show = exp_sub.add_parser("show", help="Show one experiment")
+    exp_show.add_argument("experiment_id", help="Experiment id")
+
+    cmp_r = sub.add_parser(
+        "compare",
+        help="Compare optimizers (legacy PSO vs SAPSO or research suite)",
+    )
+    cmp_r.add_argument(
+        "--config",
+        default="configs/optimization/pso_vs_sapso.yaml",
+        help="Comparison or suite YAML",
+    )
+    cmp_r.add_argument("--out", default=None, help="Output directory")
+    cmp_r.add_argument(
+        "--suite",
+        action="store_true",
+        help="Force multi-algorithm research suite mode",
+    )
+
+    report_p = sub.add_parser(
+        "report",
+        help="Generate research report from a run directory (Phase 10)",
+    )
+    report_p.add_argument("--run-dir", required=True, help="Research run directory")
+    report_p.add_argument("--out", default=None, help="Optional report output path")
+
     return parser
 
 
@@ -518,6 +566,48 @@ def main(argv: list[str] | None = None) -> int:
             args.history,
             output_dir=args.out,
         )
+        print(json.dumps(payload, indent=2, default=str))
+        return 0
+
+    if args.command == "benchmark":
+        from evonas.application.research.use_cases import BenchmarkUseCase
+
+        payload = BenchmarkUseCase().run(
+            args.config,
+            output_dir=args.out,
+            dry_run=bool(args.dry_run),
+        )
+        print(json.dumps(payload, indent=2, default=str))
+        return 0
+
+    if args.command == "experiment":
+        from evonas.application.research.use_cases import ExperimentUseCase
+
+        uc = ExperimentUseCase()
+        if args.experiment_command == "list":
+            print(json.dumps(uc.list(limit=int(args.limit)), indent=2, default=str))
+            return 0
+        if args.experiment_command == "show":
+            print(json.dumps(uc.show(args.experiment_id), indent=2, default=str))
+            return 0
+        print("Usage: evonas experiment list|show <id>")
+        return 1
+
+    if args.command == "compare":
+        from evonas.application.research.use_cases import CompareResearchUseCase
+
+        payload = CompareResearchUseCase().run(
+            args.config,
+            output_dir=args.out,
+            suite=bool(args.suite),
+        )
+        print(json.dumps(payload, indent=2, default=str))
+        return 0
+
+    if args.command == "report":
+        from evonas.application.research.use_cases import ReportUseCase
+
+        payload = ReportUseCase().run(args.run_dir, out=args.out)
         print(json.dumps(payload, indent=2, default=str))
         return 0
 

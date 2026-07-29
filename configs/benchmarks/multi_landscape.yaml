@@ -1,0 +1,42 @@
+# Multi-landscape quick suite (Sphere + Rastrigin), 5 seeds
+experiment_id: research_multi_landscape
+run_id: research_multi_landscape
+seed: 7
+
+algorithms:
+  - standard_pso
+  - sapso
+  - random_search
+
+datasets:
+  - id: sphere
+    landscape: sphere
+    space_path: configs/search_spaces/sphere_2d.yaml
+  - id: rastrigin
+    landscape: rastrigin
+    space_path: configs/search_spaces/sphere_2d.yaml
+
+seeds:
+  n: 5
+  base: 7
+
+optimization:
+  swarm_size: 10
+  max_iterations: 15
+  log_particles: false
+
+random_search:
+  n_trials: 150
+
+adaptation: {}
+
+statistics:
+  confidence: 0.95
+  significance_tests: true
+
+fitness:
+  mode: mock
+  sense: maximize
+
+experiment:
+  artifacts_root: artifacts/research

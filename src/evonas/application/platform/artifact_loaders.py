@@ -80,6 +80,7 @@ def discover_artifact_roots(cwd: str | Path | None = None) -> dict[str, Path]:
         "closed_loop": artifacts / "closed_loop",
         "continuous_learning": artifacts / "continuous_learning",
         "baselines": artifacts / "baselines",
+        "research": artifacts / "research",
         "rc1": artifacts / "rc1",
         "demo": artifacts / "demo",
     }

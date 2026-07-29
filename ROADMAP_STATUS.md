@@ -12,10 +12,10 @@
 | 7 | Continuous learning | Done | v0.7.0 |
 | 8 | AI Operations Dashboard | Done | v0.8.0 |
 | 9 | Platform Services & Deployment | Done | v0.9.0 |
-| 10 | Experiment tracking | Not started | — |
+| 10 | Scientific Evaluation & Experiments | Done | v1.0.0-rc1 |
 | 11 | Model registry | Not started | — |
 | 12 | Research extensions | Not started | — |
 
-**Note:** `idea.md` originally listed Dashboard as Phase 9 and Deployment as Phase 8. Product delivery shipped Dashboard as **v0.8.0 / Phase 8** and Platform Services (FastAPI + local Docker) as **v0.9.0 / Phase 9**.
+**Note:** `idea.md` originally listed Dashboard as Phase 9 and Deployment as Phase 8. Product delivery shipped Dashboard as **v0.8.0 / Phase 8**, Platform Services as **v0.9.0 / Phase 9**, and scientific evaluation as **v1.0.0-rc1 / Phase 10**.
 
-**Current release:** v0.9.0 — API control plane + local deploy topology; cloud/auth deferred.
+**Current release:** v1.0.0-rc1 — reproducible benchmark framework; model registry / paper drafting deferred.

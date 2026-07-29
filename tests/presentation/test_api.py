@@ -43,8 +43,8 @@ def test_health_and_version(client: TestClient) -> None:
     assert r.status_code == 200
     body = r.json()
     assert body["status"] == "ok"
-    assert body["version"] == "0.9.0"
-    assert client.get("/api/v1/version").json()["version"] == "0.9.0"
+    assert body["version"] == "1.0.0rc1"
+    assert client.get("/api/v1/version").json()["version"] == "1.0.0rc1"
 
 
 def test_dashboard_demo_payloads(client: TestClient) -> None:
@@ -134,7 +134,7 @@ def test_cli_api_serve_status_parsers() -> None:
 
 def test_version_0_9(capsys) -> None:  # type: ignore[no-untyped-def]
     assert main(["version"]) == 0
-    assert capsys.readouterr().out.strip() == "0.9.0"
+    assert capsys.readouterr().out.strip() == "1.0.0rc1"
 
 
 def test_api_client_against_testclient(client: TestClient, monkeypatch: pytest.MonkeyPatch) -> None:

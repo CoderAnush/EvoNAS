@@ -1,0 +1,64 @@
+# Phase 10 scientific benchmark suite — mock Sphere (reproducible, CI-safe)
+experiment_id: research_sphere_suite
+run_id: research_sphere_suite
+seed: 42
+
+algorithms:
+  - standard_pso
+  - sapso
+  - random_search
+
+datasets:
+  - id: sphere
+    landscape: sphere
+    space_path: configs/search_spaces/sphere_2d.yaml
+
+seeds:
+  n: 5
+  base: 42
+
+configurations:
+  - id: default
+
+search_space:
+  path: configs/search_spaces/sphere_2d.yaml
+
+optimization:
+  swarm_size: 12
+  max_iterations: 20
+  w: 0.729
+  c1: 1.49445
+  c2: 1.49445
+  log_particles: false
+
+random_search:
+  n_trials: 240
+
+adaptation:
+  inertia:
+    w_min: 0.4
+    w_max: 0.9
+    w_refine: 0.35
+    alpha: 0.5
+    beta: 0.3
+    gamma: 0.2
+    eta_slow: 0.001
+    eta_good: 0.01
+    improvement_window: 5
+  acceleration:
+    c_min: 0.5
+    c_max: 2.5
+    c_sum: 4.1
+    delta_collapse: 0.05
+
+statistics:
+  confidence: 0.95
+  significance_tests: true
+
+fitness:
+  mode: mock
+  landscape: sphere
+  sense: maximize
+
+experiment:
+  artifacts_root: artifacts/research

@@ -5,6 +5,30 @@ All notable changes to EvoNAS are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [v1.0.0-rc1] — 2026-07-30
+
+### Added
+
+- Scientific Evaluation & Experimental Framework (Phase 10)
+- `ExperimentOrchestrator` with algorithm × dataset × seed matrix
+- Research baseline: `evonas.benchmarks.RandomSearch` (not closed-loop wired)
+- Statistics: mean/median/variance/std/CI + optional Wilcoxon + Cliff’s δ
+- Publication figures (PNG/SVG/PDF) and tables (CSV/Markdown/LaTeX)
+- Experiment registry (`artifacts/research/index.jsonl`) + checksums
+- Auto research reports (methodology / results / limitations / threats)
+- CLI: `evonas benchmark`, `experiment`, `compare`, `report`
+- Research docs: protocol, benchmark/reproducibility/figure/methodology guides
+
+### Changed
+
+- Package version bumped to **1.0.0rc1**
+- Dashboard query discovers `artifacts/research` comparisons (no UI rewrite)
+
+### Notes
+
+- Optimizers / trainer / API / dashboard presentation engines unchanged
+- Reporting is unbiased — winners follow recorded metrics only
+
 ## [v0.9.0] — 2026-07-30
 
 ### Added
@@ -244,6 +268,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - No neural network training, PSO, or closed-loop controller in this release.
 - Production optimization engine remains SAPSO-only per `idea.md` (implemented in later phases).
 
+[v1.0.0-rc1]: https://github.com/CoderAnush/EvoNAS/releases/tag/v1.0.0-rc1
 [v0.9.0]: https://github.com/CoderAnush/EvoNAS/releases/tag/v0.9.0
 [v0.8.0]: https://github.com/CoderAnush/EvoNAS/releases/tag/v0.8.0
 [v0.7.0]: https://github.com/CoderAnush/EvoNAS/releases/tag/v0.7.0

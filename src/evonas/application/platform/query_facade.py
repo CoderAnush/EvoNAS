@@ -107,7 +107,12 @@ class DashboardService:
         """Find comparison.json files."""
         roots = self.ctx.roots()
         found: list[Path] = []
-        for base in (roots["optimization"], roots["rc1"] / "cmp", roots["demo"] / "cmp"):
+        for base in (
+            roots["optimization"],
+            roots.get("research", roots["artifacts"] / "research"),
+            roots["rc1"] / "cmp",
+            roots["demo"] / "cmp",
+        ):
             if not base.exists():
                 continue
             if (base / "comparison.json").exists():
@@ -450,6 +455,24 @@ class DashboardService:
                         "path": str(run),
                     }
                 )
+        research_root = self.ctx.roots().get("research")
+        if research_root and research_root.exists():
+            for run in list_run_dirs(research_root):
+                meta = read_json(run / "meta.json")
+                comparison = read_json(run / "comparison.json")
+                if isinstance(meta, dict) or isinstance(comparison, dict):
+                    winner = (comparison or {}).get("winner") if isinstance(comparison, dict) else None
+                    rows.append(
+                        {
+                            "kind": "research",
+                            "run_id": (meta or {}).get("experiment_id", run.name)
+                            if isinstance(meta, dict)
+                            else run.name,
+                            "algorithm": winner,
+                            "metric": None,
+                            "path": str(run),
+                        }
+                    )
         return rows
 
     def comparison(self) -> dict[str, Any]:
