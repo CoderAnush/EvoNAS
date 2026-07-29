@@ -135,6 +135,63 @@ def build_parser() -> argparse.ArgumentParser:
         default=None,
         help="Output artifacts directory",
     )
+
+    run_loop = sub.add_parser(
+        "run-loop",
+        help="Run the closed-loop controller (Phase 6)",
+    )
+    run_loop.add_argument(
+        "--config",
+        default="configs/closed_loop/default.yaml",
+        help="Closed-loop YAML config",
+    )
+    run_loop.add_argument(
+        "--out",
+        default=None,
+        help="Output artifacts directory",
+    )
+    run_loop.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Force mock fitness (no neural training)",
+    )
+    run_loop.add_argument(
+        "--max-cycles",
+        type=int,
+        default=None,
+        help="Override closed_loop.max_cycles",
+    )
+
+    sim_loop = sub.add_parser(
+        "simulate-loop",
+        help="Simulate full closed-loop lifecycle without deployment (Phase 6)",
+    )
+    sim_loop.add_argument(
+        "--config",
+        default="configs/closed_loop/simulate.yaml",
+        help="Simulation YAML config",
+    )
+    sim_loop.add_argument(
+        "--out",
+        default=None,
+        help="Output artifacts directory",
+    )
+    sim_loop.add_argument(
+        "--max-cycles",
+        type=int,
+        default=None,
+        help="Override closed_loop.max_cycles",
+    )
+
+    inspect_loop = sub.add_parser(
+        "inspect-loop",
+        help="Inspect a closed-loop artifact run (Phase 6)",
+    )
+    inspect_loop.add_argument(
+        "--run-dir",
+        required=True,
+        help="Path to closed-loop artifact directory",
+    )
     return parser
 
 
@@ -261,12 +318,48 @@ def main(argv: list[str] | None = None) -> int:
         print(json.dumps(comparison, indent=2, default=str))
         return 0
 
+    if args.command == "run-loop":
+        from evonas.application.closed_loop.use_cases import RunClosedLoopUseCase
+
+        summary = RunClosedLoopUseCase().run(
+            args.config,
+            output_dir=args.out,
+            dry_run=bool(args.dry_run),
+            max_cycles=args.max_cycles,
+        )
+        print(json.dumps(summary, indent=2, default=str))
+        return 0
+
+    if args.command == "simulate-loop":
+        from evonas.application.closed_loop.use_cases import RunClosedLoopUseCase
+
+        summary = RunClosedLoopUseCase().run(
+            args.config,
+            output_dir=args.out,
+            simulate=True,
+            dry_run=True,
+            max_cycles=args.max_cycles,
+        )
+        print(json.dumps(summary, indent=2, default=str))
+        return 0
+
+    if args.command == "inspect-loop":
+        from evonas.application.closed_loop.use_cases import InspectClosedLoopUseCase
+
+        payload = InspectClosedLoopUseCase().inspect(args.run_dir)
+        print(json.dumps(payload, indent=2, default=str))
+        return 0
+
     if args.command in {"run", "replay"}:
         logger.warning(
-            "Command '%s' is specified in idea.md but not implemented until later phases.",
+            "Command '%s' is specified in idea.md; prefer run-loop / simulate-loop "
+            "in Phase 6 (full mode wiring continues in later phases).",
             args.command,
         )
-        print(f"'{args.command}' will be available in a later phase (see idea.md roadmap).")
+        print(
+            f"'{args.command}' maps to Phase 6+ modes — use "
+            "`evonas run-loop` / `evonas simulate-loop` (see idea.md)."
+        )
         return 0
 
     parser.print_help()

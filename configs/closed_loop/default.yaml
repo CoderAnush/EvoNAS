@@ -1,0 +1,85 @@
+# Closed-Loop Controller — default Quick / research-friendly config (Phase 6)
+run_id: closed_loop_default
+seed: 42
+simulate: false
+
+policy:
+  path: configs/policies/default_policy.yaml
+
+closed_loop:
+  max_cycles: 1
+  monitor_interval_seconds: 0.0
+  retry_limits:
+    optimization: 1
+    training: 1
+  timeouts:
+    optimization_minutes: 60
+    cycle_minutes: 120
+
+triggers:
+  manual: true
+  scheduled: true
+  metric_based: true
+  drift_based: true
+  budget_based: true
+  schedule_on_first_cycle: true
+
+baseline:
+  accuracy: 0.55
+  metrics:
+    accuracy: 0.55
+
+observation:
+  drift_status: none
+  force_optimization: false
+  drift_report: {}
+
+dataset:
+  config_path: configs/datasets/toy_quick.yaml
+
+search_space:
+  path: configs/search_spaces/sphere_2d.yaml
+
+optimization:
+  algorithm: sapso
+  swarm_size: 8
+  max_iterations: 5
+  w: 0.729
+  c1: 1.49445
+  c2: 1.49445
+  kappa: 0.2
+  init_velocity_scale: 0.2
+  initialization: random
+  checkpoint_every: 5
+  log_particles: false
+
+adaptation:
+  inertia:
+    w_min: 0.4
+    w_max: 0.9
+    w_refine: 0.35
+    alpha: 0.5
+    beta: 0.3
+    gamma: 0.2
+    eta_slow: 0.001
+    eta_good: 0.01
+    improvement_window: 5
+  acceleration:
+    c_min: 0.5
+    c_max: 2.5
+    c_sum: 4.1
+    delta_collapse: 0.05
+    delta_high: 0.35
+  stagnation_iters: 8
+
+fitness:
+  mode: mock
+  landscape: sphere
+  sense: maximize
+
+logging:
+  level: INFO
+  json_logs: false
+
+experiment:
+  artifacts_root: artifacts/closed_loop

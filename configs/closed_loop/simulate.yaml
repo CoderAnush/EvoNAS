@@ -1,0 +1,62 @@
+# Deterministic closed-loop simulation (mock fitness, no deployment)
+run_id: closed_loop_simulate
+seed: 7
+simulate: true
+
+policy:
+  path: configs/policies/default_policy.yaml
+
+closed_loop:
+  max_cycles: 1
+  monitor_interval_seconds: 0.0
+
+triggers:
+  manual: true
+  scheduled: true
+  metric_based: true
+  drift_based: true
+  budget_based: true
+  schedule_on_first_cycle: true
+
+baseline:
+  accuracy: 0.55
+  metrics:
+    accuracy: 0.55
+
+# Explicit candidate accuracy for deterministic accept path demos
+candidate_metrics_override:
+  accuracy: 0.62
+
+observation:
+  drift_status: none
+  force_optimization: false
+
+search_space:
+  path: configs/search_spaces/sphere_2d.yaml
+
+optimization:
+  algorithm: sapso
+  swarm_size: 6
+  max_iterations: 3
+  log_particles: false
+
+adaptation:
+  inertia:
+    w_min: 0.4
+    w_max: 0.9
+    alpha: 0.5
+    beta: 0.3
+    gamma: 0.2
+  acceleration:
+    c_min: 0.5
+    c_max: 2.5
+    c_sum: 4.1
+  stagnation_iters: 8
+
+fitness:
+  mode: mock
+  landscape: sphere
+  sense: maximize
+
+experiment:
+  artifacts_root: artifacts/closed_loop

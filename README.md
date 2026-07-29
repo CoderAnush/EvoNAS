@@ -12,8 +12,8 @@ EvoNAS is an **autonomous AI lifecycle management platform** that continuously m
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?logo=python&logoColor=white)](https://www.python.org/)
-[![Status](https://img.shields.io/badge/Status-Phase%205%20Complete%20(v0.5.0)-brightgreen)](docs/phase_reports/phase5.md)
-[![Version](https://img.shields.io/badge/Version-v0.5.0-informational)](CHANGELOG.md)
+[![Status](https://img.shields.io/badge/Status-Phase%206%20Complete%20(v0.6.0)-brightgreen)](docs/phase_reports/phase6.md)
+[![Version](https://img.shields.io/badge/Version-v0.6.0-informational)](CHANGELOG.md)
 [![Research](https://img.shields.io/badge/Research-IEEE%20Oriented-0A66C2)](idea.md)
 [![AutoML](https://img.shields.io/badge/AutoML-Closed%20Loop-6f42c1)](idea.md)
 [![Deep Learning](https://img.shields.io/badge/Deep%20Learning-PyTorch%20%7C%20TensorFlow-EE4C2C)](idea.md)
@@ -447,9 +447,10 @@ Implementation status tracks the Master Specification phases. Checklist items ar
 - [x] Phase 5 freeze report (`docs/phase_reports/phase5.md`)
 
 ### Phase 6 — Closed-Loop Controller
-- [ ] Explicit state machine
-- [ ] Decision Engine + policy YAML
-- [ ] End-to-end Quick Mode loop with decision logs
+- [x] Explicit lifecycle state machine + history recorder
+- [x] Decision Engine + policy YAML + OptimizationTrigger
+- [x] Validation / local promotion (no deploy) + simulation CLI
+- [x] Phase 6 freeze report (`docs/phase_reports/phase6.md`)
 
 ### Phase 7 — Continuous Learning Engine
 - [ ] Data windows + retention
@@ -604,8 +605,9 @@ evonas api
 | Dynamic architecture → model builder | ✅ Phase 3 (`v0.3.0`) |
 | Standard PSO architecture search | ✅ Phase 4 (`v0.4.0`) |
 | Self-Adaptive PSO (SAPSO) | ✅ Phase 5 (`v0.5.0`) |
-| Phase reports | ✅ `docs/phase_reports/phase{1,2,3,4,5}.md` |
-| Closed-loop Quick demo | ⏳ Phase 6+ |
+| Closed-loop controller (observe→decide→optimize→validate→promote) | ✅ Phase 6 (`v0.6.0`) |
+| Phase reports | ✅ `docs/phase_reports/phase{1,2,3,4,5,6}.md` |
+| Continuous learning / deploy | ⏳ Phase 7–8 |
 | Dashboard Replay | ⏳ Phase 9+ |
 
 ---
@@ -620,10 +622,12 @@ evonas api
 | [`docs/phase_reports/phase3.md`](docs/phase_reports/phase3.md) | **Available** | Phase 3 dynamic model generation report |
 | [`docs/phase_reports/phase4.md`](docs/phase_reports/phase4.md) | **Available** | Phase 4 Standard PSO report |
 | [`docs/phase_reports/phase5.md`](docs/phase_reports/phase5.md) | **Available** | Phase 5 SAPSO report |
+| [`docs/phase_reports/phase6.md`](docs/phase_reports/phase6.md) | **Available** | Phase 6 closed-loop controller report |
 | [`docs/RELEASE_NOTES_v0.2.0.md`](docs/RELEASE_NOTES_v0.2.0.md) | **Available** | v0.2.0 release notes |
 | [`docs/RELEASE_NOTES_v0.3.0.md`](docs/RELEASE_NOTES_v0.3.0.md) | **Available** | v0.3.0 release notes |
 | [`docs/RELEASE_NOTES_v0.4.0.md`](docs/RELEASE_NOTES_v0.4.0.md) | **Available** | v0.4.0 release notes |
 | [`docs/RELEASE_NOTES_v0.5.0.md`](docs/RELEASE_NOTES_v0.5.0.md) | **Available** | v0.5.0 release notes |
+| [`docs/RELEASE_NOTES_v0.6.0.md`](docs/RELEASE_NOTES_v0.6.0.md) | **Available** | v0.6.0 release notes |
 | `ROADMAP.md` | Coming Soon | Phase tracking derived from `idea.md` |
 | `ARCHITECTURE.md` | Coming Soon | Architecture digest for contributors |
 | `CONTRIBUTING.md` | Coming Soon | Contribution process and review standards |

@@ -5,6 +5,36 @@ All notable changes to EvoNAS are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [v0.6.0] — 2026-07-29
+
+### Added
+
+- Closed-Loop Autonomous Optimization Controller (Phase 6)
+- `ClosedLoopController` + `WorkflowExecutor` orchestration (no PSO/train math in controller)
+- Immutable serializable `DecisionContext` and policy-driven `DecisionEngine`
+- `OptimizationTrigger` (manual / scheduled / metric / drift / budget)
+- Lifecycle state machine with logged transitions
+- `ValidationEngine` + local `PromotionManager` (accept/reject, no deploy)
+- Failure recovery to safe `MONITORING` state
+- Lifecycle history recorder (JSON / CSV / decisions JSONL)
+- Lifecycle matplotlib visualizations
+- Configs: `configs/closed_loop/default.yaml`, `simulate.yaml`, `configs/policies/default_policy.yaml`
+- CLI: `evonas run-loop`, `simulate-loop`, `inspect-loop`
+- Ports: `IClosedLoopController`, `IDecisionEngine`, `IOptimizationTrigger`, `IValidationEngine`, `IPromotionManager`
+- Phase 6 report and release notes
+- Decision / closed-loop test suites
+
+### Changed
+
+- Package version bumped to **0.6.0**
+- README roadmap marks Phase 6 complete
+
+### Notes
+
+- Controller orchestrates existing `OptimizeUseCase` (SAPSO default, PSO selectable).
+- Standard PSO and SAPSO engines are unmodified.
+- No deployment, continuous learning datasets, FastAPI, dashboard, or registry in this release.
+
 ## [v0.5.0] — 2026-07-29
 
 ### Added
@@ -132,6 +162,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - No neural network training, PSO, or closed-loop controller in this release.
 - Production optimization engine remains SAPSO-only per `idea.md` (implemented in later phases).
 
+[v0.6.0]: https://github.com/CoderAnush/EvoNAS/releases/tag/v0.6.0
 [v0.5.0]: https://github.com/CoderAnush/EvoNAS/releases/tag/v0.5.0
 [v0.4.0]: https://github.com/CoderAnush/EvoNAS/releases/tag/v0.4.0
 [v0.3.0]: https://github.com/CoderAnush/EvoNAS/releases/tag/v0.3.0

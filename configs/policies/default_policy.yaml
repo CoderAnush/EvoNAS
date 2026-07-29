@@ -1,0 +1,29 @@
+# Default DecisionEngine policy (Phase 6 — local promotion only)
+policy_version: "1.0.0"
+
+degradation:
+  accuracy_floor: 0.50
+  accuracy_drop_abs: 0.02
+  min_expected_improvement: 0.005
+
+drift:
+  psi_threshold: 0.2
+  treat_unknown_drift_as_ok: true
+
+optimization:
+  cooldown_hours: 0.0
+  force_initial_search: true
+
+budgets:
+  max_optimizations: 3
+  max_search_wallclock_minutes: 180.0
+
+validation:
+  min_improvement_abs: 0.005
+  max_complexity_params: null
+  max_train_seconds: null
+  allow_parity_promote: false
+
+deployment:
+  allow_deploy: false
+  allow_rollback: false
