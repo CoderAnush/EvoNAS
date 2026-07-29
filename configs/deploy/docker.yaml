@@ -1,0 +1,15 @@
+# Docker Compose topology (Phase 9 — local containers only)
+deploy:
+  environment: "docker"
+  api:
+    host: "0.0.0.0"
+    port: 8000
+  dashboard:
+    host: "0.0.0.0"
+    port: 8501
+  artifacts_root: "/data/artifacts"
+  allow_promote: false
+  allow_rollback: false
+  services:
+    - api
+    - dashboard

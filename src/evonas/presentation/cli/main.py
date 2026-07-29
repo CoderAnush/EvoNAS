@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import json
 import logging
+import sys
 from pathlib import Path
 
 from evonas import __version__
@@ -207,6 +208,37 @@ def build_parser() -> argparse.ArgumentParser:
         "--headless",
         action="store_true",
         help="Run Streamlit headless (CI / remote)",
+    )
+
+    api_p = sub.add_parser("api", help="Start FastAPI control plane (Phase 9)")
+    api_p.add_argument("--host", default=None, help="Bind host (default from config)")
+    api_p.add_argument("--port", type=int, default=None, help="Bind port (default 8000)")
+    api_p.add_argument("--reload", action="store_true", help="Auto-reload (dev)")
+    api_p.add_argument(
+        "--config",
+        default="configs/api/default.yaml",
+        help="API YAML config",
+    )
+
+    serve_p = sub.add_parser(
+        "serve",
+        help="Start API + dashboard together (Phase 9)",
+    )
+    serve_p.add_argument("--api-port", type=int, default=8000, help="API port")
+    serve_p.add_argument("--dashboard-port", type=int, default=8501, help="Dashboard port")
+    serve_p.add_argument("--demo", action="store_true", help="Enable demo mode")
+    serve_p.add_argument("--headless", action="store_true", help="Headless Streamlit")
+    serve_p.add_argument(
+        "--api-only",
+        action="store_true",
+        help="Start API only (no dashboard process)",
+    )
+
+    status_p = sub.add_parser("status", help="Query API /api/v1/status (Phase 9)")
+    status_p.add_argument(
+        "--api-url",
+        default=None,
+        help="API base URL (default EVONAS_API_URL or http://127.0.0.1:8000)",
     )
 
     learn = sub.add_parser(
@@ -425,6 +457,38 @@ def main(argv: list[str] | None = None) -> int:
             demo=bool(args.demo),
             headless=bool(args.headless),
         )
+
+    if args.command == "api":
+        from evonas.presentation.api.launcher import launch_api
+
+        return launch_api(
+            host=args.host,
+            port=args.port,
+            reload=bool(args.reload),
+            config=args.config,
+        )
+
+    if args.command == "serve":
+        from evonas.presentation.api.launcher import launch_serve
+
+        return launch_serve(
+            api_port=int(args.api_port),
+            dashboard_port=int(args.dashboard_port),
+            demo=bool(args.demo),
+            headless=bool(args.headless),
+            skip_dashboard=bool(args.api_only),
+        )
+
+    if args.command == "status":
+        from evonas.presentation.api.launcher import fetch_status
+
+        try:
+            payload = fetch_status(args.api_url)
+        except Exception as exc:  # noqa: BLE001
+            print(f"status unavailable: {exc}", file=sys.stderr)
+            return 1
+        print(json.dumps(payload, indent=2, default=str))
+        return 0
 
     if args.command == "learn":
         from evonas.application.continuous.use_cases import ContinuousLearningUseCase

@@ -1,0 +1,38 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      EVONAS_ENV: docker
+      EVONAS_API_CONFIG: configs/api/default.yaml
+      EVONAS_ARTIFACTS_ROOT: /data/artifacts
+      EVONAS_LOG_LEVEL: INFO
+      EVONAS_JSON_LOGS: "0"
+      EVONAS_DASHBOARD_DEMO: "1"
+    volumes:
+      - artifacts:/data/artifacts
+      - ./configs:/app/configs:ro
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/v1/health')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile.dashboard
+    ports:
+      - "8501:8501"
+    environment:
+      EVONAS_API_URL: http://api:8000
+      EVONAS_DASHBOARD_DEMO: "1"
+    depends_on:
+      api:
+        condition: service_healthy
+
+volumes:
+  artifacts:

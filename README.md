@@ -12,8 +12,8 @@ EvoNAS is an **autonomous AI lifecycle management platform** that continuously m
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?logo=python&logoColor=white)](https://www.python.org/)
-[![Status](https://img.shields.io/badge/Status-Phase%208%20Dashboard%20(v0.8.0)-brightgreen)](docs/phase_reports/phase8.md)
-[![Version](https://img.shields.io/badge/Version-v0.8.0-informational)](CHANGELOG.md)
+[![Status](https://img.shields.io/badge/Status-Phase%209%20Platform%20(v0.9.0)-brightgreen)](docs/phase_reports/phase9.md)
+[![Version](https://img.shields.io/badge/Version-v0.9.0-informational)](CHANGELOG.md)
 [![Research](https://img.shields.io/badge/Research-IEEE%20Oriented-0A66C2)](idea.md)
 [![AutoML](https://img.shields.io/badge/AutoML-Closed%20Loop-6f42c1)](idea.md)
 [![Deep Learning](https://img.shields.io/badge/Deep%20Learning-PyTorch%20%7C%20TensorFlow-EE4C2C)](idea.md)
@@ -401,7 +401,7 @@ EvoNAS/
 | **Deployment** | Localhost inference, Docker Compose, future cloud adapters |
 | **Experiment Tracking** | First-party experiment manifests + artifact store (MLflow adapter future) |
 | **Visualization** | Matplotlib / Plotly via Visualization Engine |
-| **Packaging** | `pyproject.toml`, optional extras (`pytorch`, `dashboard`, `dev`) |
+| **Packaging** | `pyproject.toml`, optional extras (`pytorch`, `dashboard`, `api`, `dev`) |
 
 ---
 
@@ -464,11 +464,14 @@ Implementation status tracks the Master Specification phases. Checklist items ar
 - [x] CLI `evonas dashboard`
 - [x] Phase 8 report (`docs/phase_reports/phase8.md`)
 
-### Phase 9 — Deployment Manager
-- [ ] Localhost staging / promote / LKG
-- [ ] Automatic rollback path
-- [ ] Docker deployment target
-- [ ] FastAPI control plane (optional)
+### Phase 9 — Platform Services & Deployment
+- [x] FastAPI control plane `/api/v1` + OpenAPI
+- [x] JobManager + WebSocket live events
+- [x] Dashboard API-backed (no direct artifact IO)
+- [x] Docker Compose (api + dashboard) + local deploy configs
+- [x] CLI `evonas api` / `serve` / `status`
+- [x] Phase 9 report (`docs/phase_reports/phase9.md`)
+- [ ] Cloud adapters / auth / K8s (deferred)
 
 ### Phase 10 — Experiment Tracking
 - [ ] Experiment index, compare, export
@@ -590,11 +593,14 @@ evonas run --mode research --config configs/modes/research.yaml
 evonas replay --experiment-id exp_YYYYMMDD_HHMMSS_id
 ```
 
-### Planned Dashboard / API
+### Dashboard / API
 
 ```bash
-evonas dashboard
-evonas api
+pip install -e ".[api,dashboard,dev]"
+evonas serve --demo
+evonas api --port 8000
+evonas status
+docker compose up --build
 ```
 
 ### What exists today
@@ -611,8 +617,9 @@ evonas api
 | Closed-loop controller (observe→decide→optimize→validate→promote) | ✅ Phase 6 (`v0.6.0`) |
 | Continuous learning / data evolution | ✅ Phase 7 (`v0.7.0`) |
 | AI Operations Dashboard (Streamlit) | ✅ Phase 8 (`v0.8.0`) |
-| Phase reports | ✅ `docs/phase_reports/phase{1..8}.md` |
-| Deployment / FastAPI | ⏳ Phase 9+ |
+| FastAPI + Docker platform services | ✅ Phase 9 (`v0.9.0`) |
+| Phase reports | ✅ `docs/phase_reports/phase{1..9}.md` |
+| Cloud / auth | ⏳ post-v1.0 |
 
 ---
 
@@ -629,6 +636,10 @@ evonas api
 | [`docs/phase_reports/phase6.md`](docs/phase_reports/phase6.md) | **Available** | Phase 6 closed-loop controller report |
 | [`docs/phase_reports/phase7.md`](docs/phase_reports/phase7.md) | **Available** | Phase 7 continuous learning report |
 | [`docs/phase_reports/phase8.md`](docs/phase_reports/phase8.md) | **Available** | Phase 8 AI Operations Dashboard |
+| [`docs/phase_reports/phase9.md`](docs/phase_reports/phase9.md) | **Available** | Phase 9 platform services |
+| [`docs/RELEASE_NOTES_v0.9.0.md`](docs/RELEASE_NOTES_v0.9.0.md) | **Available** | v0.9.0 release notes |
+| [`docs/ops/DEPLOYMENT.md`](docs/ops/DEPLOYMENT.md) | **Available** | Local / Docker deploy guide |
+| [`docs/ops/API_REFERENCE.md`](docs/ops/API_REFERENCE.md) | **Available** | REST API reference |
 | [`docs/RELEASE_NOTES_v0.8.0.md`](docs/RELEASE_NOTES_v0.8.0.md) | **Available** | v0.8.0 release notes |
 | [`docs/rc1/`](docs/rc1/README.md) | **Available** | v0.7.0 RC1 freeze package |
 | [`docs/demo/`](docs/demo/DEMO_SCRIPT.md) | **Available** | Professor demo (&lt;10 min) |

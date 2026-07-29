@@ -11,7 +11,7 @@ from evonas.presentation.cli.main import main
 
 def test_version(capsys) -> None:
     assert main(["version"]) == 0
-    assert capsys.readouterr().out.strip() == "0.8.0"
+    assert capsys.readouterr().out.strip() == "0.9.0"
 
 
 def test_validate_model_ok(capsys) -> None:

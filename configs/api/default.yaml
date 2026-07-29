@@ -1,0 +1,32 @@
+# EvoNAS API control plane (Phase 9)
+api:
+  host: "0.0.0.0"
+  port: 8000
+  reload: false
+  cors_origins:
+    - "http://localhost:8501"
+    - "http://127.0.0.1:8501"
+  title: "EvoNAS Control Plane"
+  docs_url: "/docs"
+  redoc_url: "/redoc"
+  openapi_url: "/openapi.json"
+
+logging:
+  level: "INFO"
+  json_logs: false
+
+artifacts:
+  root: "artifacts"
+
+jobs:
+  max_workers: 2
+  default_dry_run: true
+
+dashboard:
+  url: "http://127.0.0.1:8501"
+
+websocket:
+  enabled: true
+  path: "/api/v1/ws/events"
+
+environment: "development"

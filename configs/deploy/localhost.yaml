@@ -1,0 +1,12 @@
+# Localhost deployment topology (Phase 9 — no cloud)
+deploy:
+  environment: "local"
+  api:
+    host: "127.0.0.1"
+    port: 8000
+  dashboard:
+    host: "127.0.0.1"
+    port: 8501
+  artifacts_root: "artifacts"
+  allow_promote: false
+  allow_rollback: false

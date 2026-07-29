@@ -5,6 +5,34 @@ All notable changes to EvoNAS are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [v0.9.0] — 2026-07-30
+
+### Added
+
+- Platform Services & Deployment Layer (Phase 9) — FastAPI control plane
+- `/api/v1` health, status, system, config, dashboard, optimization, training,
+  closed-loop, continuous-learning, benchmarks, experiments, artifacts, replay, jobs
+- Application platform services with FastAPI dependency injection
+- In-memory JobManager (queued / running / completed / failed / cancelled)
+- WebSocket live events at `/api/v1/ws/events`
+- Dashboard API client — Streamlit no longer reads artifacts directly
+- CLI: `evonas api`, `evonas serve`, `evonas status`
+- Optional extra: `evonas[api]` (fastapi, uvicorn, httpx)
+- Docker Compose (`api` + `dashboard`), Dockerfile.dashboard
+- `configs/api`, `configs/deploy`, `.env.example`
+- Ops docs: Deployment Guide, API Reference
+- Phase 9 report and release notes
+
+### Changed
+
+- Package version bumped to **0.9.0**
+- Artifact query facade moved to `application/platform` (shared by API)
+
+### Notes
+
+- Domain engines unchanged; API wraps existing use cases only
+- Auth / cloud / Kubernetes / external DBs deferred
+
 ## [v0.8.0] — 2026-07-30
 
 ### Added
@@ -216,6 +244,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - No neural network training, PSO, or closed-loop controller in this release.
 - Production optimization engine remains SAPSO-only per `idea.md` (implemented in later phases).
 
+[v0.9.0]: https://github.com/CoderAnush/EvoNAS/releases/tag/v0.9.0
 [v0.8.0]: https://github.com/CoderAnush/EvoNAS/releases/tag/v0.8.0
 [v0.7.0]: https://github.com/CoderAnush/EvoNAS/releases/tag/v0.7.0
 [v0.6.0]: https://github.com/CoderAnush/EvoNAS/releases/tag/v0.6.0

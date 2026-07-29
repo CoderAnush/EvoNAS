@@ -7,10 +7,9 @@ from typing import Any
 
 from evonas.presentation.dashboard.components import charts
 from evonas.presentation.dashboard.components.chrome import hero
-from evonas.presentation.dashboard.services.facade import DashboardService
 
 
-def render_landing(svc: DashboardService) -> None:
+def render_landing(svc: Any) -> None:
     """Landing dashboard."""
     import streamlit as st
 
@@ -39,7 +38,7 @@ def render_landing(svc: DashboardService) -> None:
         )
 
 
-def render_overview(svc: DashboardService) -> None:
+def render_overview(svc: Any) -> None:
     """System overview pipeline."""
     import streamlit as st
 
@@ -68,7 +67,7 @@ flowchart LR
     )
 
 
-def render_optimization(svc: DashboardService) -> None:
+def render_optimization(svc: Any) -> None:
     """Optimization center."""
     import streamlit as st
 
@@ -93,7 +92,7 @@ def render_optimization(svc: DashboardService) -> None:
         st.caption(f"Run: `{data['run_dir']}`")
 
 
-def render_sapso(svc: DashboardService) -> None:
+def render_sapso(svc: Any) -> None:
     """SAPSO analytics."""
     import streamlit as st
 
@@ -119,7 +118,7 @@ def render_sapso(svc: DashboardService) -> None:
         st.dataframe(records, use_container_width=True, height=280)
 
 
-def render_architecture(svc: DashboardService) -> None:
+def render_architecture(svc: Any) -> None:
     """Architecture explorer."""
     import streamlit as st
 
@@ -137,7 +136,7 @@ def render_architecture(svc: DashboardService) -> None:
                 st.json(data["spec"])
 
 
-def render_training(svc: DashboardService) -> None:
+def render_training(svc: Any) -> None:
     """Training dashboard."""
     import streamlit as st
 
@@ -161,7 +160,7 @@ def render_training(svc: DashboardService) -> None:
         st.warning("No baseline artifacts found — enable Demo Mode or run `evonas train-baseline`.")
 
 
-def render_continuous(svc: DashboardService) -> None:
+def render_continuous(svc: Any) -> None:
     """Continuous learning."""
     import streamlit as st
 
@@ -187,7 +186,7 @@ def render_continuous(svc: DashboardService) -> None:
         st.json({"edges": lineage.get("edges"), "nodes": list((lineage.get("nodes") or {}).keys())})
 
 
-def render_closed_loop(svc: DashboardService) -> None:
+def render_closed_loop(svc: Any) -> None:
     """Closed-loop monitor."""
     import streamlit as st
 
@@ -225,7 +224,7 @@ def render_closed_loop(svc: DashboardService) -> None:
     st.dataframe(hist.get("promotions") or summary.get("promotions") or [], use_container_width=True)
 
 
-def render_experiments(svc: DashboardService) -> None:
+def render_experiments(svc: Any) -> None:
     """Experiment explorer."""
     import streamlit as st
 
@@ -239,7 +238,7 @@ def render_experiments(svc: DashboardService) -> None:
         st.caption(f"{len(filtered)} experiments")
 
 
-def render_replay(svc: DashboardService) -> None:
+def render_replay(svc: Any) -> None:
     """Replay center."""
     import streamlit as st
 
@@ -256,7 +255,7 @@ def render_replay(svc: DashboardService) -> None:
         st.dataframe(steps, use_container_width=True)
 
 
-def render_benchmarks(svc: DashboardService) -> None:
+def render_benchmarks(svc: Any) -> None:
     """PSO vs SAPSO."""
     import streamlit as st
 
@@ -286,7 +285,7 @@ def render_benchmarks(svc: DashboardService) -> None:
     st.json(data)
 
 
-def render_artifacts(svc: DashboardService) -> None:
+def render_artifacts(svc: Any) -> None:
     """Artifact browser."""
     import streamlit as st
 
@@ -318,7 +317,7 @@ def render_artifacts(svc: DashboardService) -> None:
             st.write(preview)
 
 
-def render_health(svc: DashboardService) -> None:
+def render_health(svc: Any) -> None:
     """System health."""
     import streamlit as st
 
@@ -334,7 +333,7 @@ def render_health(svc: DashboardService) -> None:
         st.warning(warning)
 
 
-def render_settings(svc: DashboardService) -> None:
+def render_settings(svc: Any) -> None:
     """Read-only settings."""
     import streamlit as st
 
@@ -349,7 +348,7 @@ def render_settings(svc: DashboardService) -> None:
             st.json(configs.get(name) or {})
 
 
-def _run_selector_opt(svc: DashboardService) -> None:
+def _run_selector_opt(svc: Any) -> None:
     import streamlit as st
 
     runs = svc.list_optimization_runs()

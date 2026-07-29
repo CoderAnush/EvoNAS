@@ -69,5 +69,5 @@ def sidebar_nav() -> tuple[str, bool]:
         st.divider()
         page = st.radio("Navigate", PAGES, index=0)
         st.divider()
-        st.caption("Read-only · consumes artifacts & public APIs")
+        st.caption("Read-only · via REST API control plane")
     return str(page), bool(demo)
