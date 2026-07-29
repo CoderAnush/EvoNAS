@@ -12,8 +12,8 @@ EvoNAS is an **autonomous AI lifecycle management platform** that continuously m
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?logo=python&logoColor=white)](https://www.python.org/)
-[![Status](https://img.shields.io/badge/Status-Phase%207%20Complete%20(v0.7.0)-brightgreen)](docs/phase_reports/phase7.md)
-[![Version](https://img.shields.io/badge/Version-v0.7.0-informational)](CHANGELOG.md)
+[![Status](https://img.shields.io/badge/Status-Phase%208%20Dashboard%20(v0.8.0)-brightgreen)](docs/phase_reports/phase8.md)
+[![Version](https://img.shields.io/badge/Version-v0.8.0-informational)](CHANGELOG.md)
 [![Research](https://img.shields.io/badge/Research-IEEE%20Oriented-0A66C2)](idea.md)
 [![AutoML](https://img.shields.io/badge/AutoML-Closed%20Loop-6f42c1)](idea.md)
 [![Deep Learning](https://img.shields.io/badge/Deep%20Learning-PyTorch%20%7C%20TensorFlow-EE4C2C)](idea.md)
@@ -401,7 +401,7 @@ EvoNAS/
 | **Deployment** | Localhost inference, Docker Compose, future cloud adapters |
 | **Experiment Tracking** | First-party experiment manifests + artifact store (MLflow adapter future) |
 | **Visualization** | Matplotlib / Plotly via Visualization Engine |
-| **Packaging** | `pyproject.toml`, optional extras (`pytorch`, `dev`) — `api` / `dashboard` / `tensorflow` planned for later phases |
+| **Packaging** | `pyproject.toml`, optional extras (`pytorch`, `dashboard`, `dev`) |
 
 ---
 
@@ -458,15 +458,17 @@ Implementation status tracks the Master Specification phases. Checklist items ar
 - [x] Dataset versioning, lineage, change detection, CLI (`learn` / `detect-data` / `replay-learning`)
 - [x] Phase 7 freeze report (`docs/phase_reports/phase7.md`)
 
-### Phase 8 — Deployment Manager
+### Phase 8 — AI Operations Dashboard
+- [x] Streamlit multipage operations console
+- [x] Demo Mode + artifact/replay visualization (Plotly)
+- [x] CLI `evonas dashboard`
+- [x] Phase 8 report (`docs/phase_reports/phase8.md`)
+
+### Phase 9 — Deployment Manager
 - [ ] Localhost staging / promote / LKG
 - [ ] Automatic rollback path
 - [ ] Docker deployment target
-
-### Phase 9 — Dashboard
-- [ ] Streamlit run / replay / registry / metrics / policies
-- [ ] Live state and swarm charts
-- [ ] Offline Replay without GPU training
+- [ ] FastAPI control plane (optional)
 
 ### Phase 10 — Experiment Tracking
 - [ ] Experiment index, compare, export
@@ -551,7 +553,7 @@ python -m venv .venv
 # Unix:    source .venv/bin/activate
 
 pip install -e ".[dev]"
-# Optional: pip install -e ".[pytorch,dev]"
+# Optional: pip install -e ".[pytorch,dashboard,dev]"
 ```
 
 ### Verify
@@ -608,9 +610,9 @@ evonas api
 | Self-Adaptive PSO (SAPSO) | ✅ Phase 5 (`v0.5.0`) |
 | Closed-loop controller (observe→decide→optimize→validate→promote) | ✅ Phase 6 (`v0.6.0`) |
 | Continuous learning / data evolution | ✅ Phase 7 (`v0.7.0`) |
-| Phase reports | ✅ `docs/phase_reports/phase{1,2,3,4,5,6,7}.md` |
-| Deployment / dashboard | ⏳ Phase 8–9 |
-| Dashboard Replay | ⏳ Phase 9+ |
+| AI Operations Dashboard (Streamlit) | ✅ Phase 8 (`v0.8.0`) |
+| Phase reports | ✅ `docs/phase_reports/phase{1..8}.md` |
+| Deployment / FastAPI | ⏳ Phase 9+ |
 
 ---
 
@@ -626,6 +628,8 @@ evonas api
 | [`docs/phase_reports/phase5.md`](docs/phase_reports/phase5.md) | **Available** | Phase 5 SAPSO report |
 | [`docs/phase_reports/phase6.md`](docs/phase_reports/phase6.md) | **Available** | Phase 6 closed-loop controller report |
 | [`docs/phase_reports/phase7.md`](docs/phase_reports/phase7.md) | **Available** | Phase 7 continuous learning report |
+| [`docs/phase_reports/phase8.md`](docs/phase_reports/phase8.md) | **Available** | Phase 8 AI Operations Dashboard |
+| [`docs/RELEASE_NOTES_v0.8.0.md`](docs/RELEASE_NOTES_v0.8.0.md) | **Available** | v0.8.0 release notes |
 | [`docs/rc1/`](docs/rc1/README.md) | **Available** | v0.7.0 RC1 freeze package |
 | [`docs/demo/`](docs/demo/DEMO_SCRIPT.md) | **Available** | Professor demo (&lt;10 min) |
 | [`docs/research/`](docs/research/EXPERIMENT_PLAN.md) | **Available** | Research planning (no runs yet) |

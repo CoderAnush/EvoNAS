@@ -46,6 +46,6 @@ def test_compare_cli(tmp_path: Path, capsys) -> None:
     assert payload["winner"] in {"sapso", "standard_pso", "tie"}
 
 
-def test_version_0_7(capsys) -> None:
+def test_version_0_8(capsys) -> None:
     assert main(["version"]) == 0
-    assert capsys.readouterr().out.strip() == "0.7.0"
+    assert capsys.readouterr().out.strip() == "0.8.0"

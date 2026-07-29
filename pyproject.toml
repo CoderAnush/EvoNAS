@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "evonas"
-version = "0.7.0"
+version = "0.8.0"
 description = "EvoNAS — Autonomous Closed-Loop AutoML Platform using Self-Adaptive PSO"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -28,6 +28,12 @@ dev = [
 pytorch = [
   "torch>=2.1",
   "torchvision>=0.16",
+]
+dashboard = [
+  "streamlit>=1.28",
+  "plotly>=5.18",
+  "pandas>=2.0",
+  "matplotlib>=3.8",
 ]
 
 [project.scripts]

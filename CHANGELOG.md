@@ -5,6 +5,30 @@ All notable changes to EvoNAS are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [v0.8.0] — 2026-07-30
+
+### Added
+
+- AI Operations Dashboard (Phase 8) — Streamlit multipage control center
+- `DashboardService` read-only facade over artifacts + ArchitectureVisualizer
+- Demo Mode for presentations (no training / optimization)
+- Plotly charts: fitness, SAPSO coefficients, diversity, drift, training curves
+- Pages: Landing, Overview, Optimization, SAPSO, Architecture, Training, CL,
+  Closed Loop, Experiments, Replay, Benchmarks, Artifacts, Health, Settings
+- CLI: `evonas dashboard [--demo] [--port] [--headless]`
+- Optional extra: `evonas[dashboard]` (streamlit, plotly, pandas, matplotlib)
+- Phase 8 report and release notes
+- Presentation-layer dashboard tests
+
+### Changed
+
+- Package version bumped to **0.8.0**
+
+### Notes
+
+- Dashboard consumes public interfaces / artifacts only — PSO/SAPSO/CL/Controller untouched.
+- Deployment / FastAPI / auth deferred.
+
 ## [v0.7.0] — 2026-07-29
 
 ### Added
@@ -192,6 +216,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - No neural network training, PSO, or closed-loop controller in this release.
 - Production optimization engine remains SAPSO-only per `idea.md` (implemented in later phases).
 
+[v0.8.0]: https://github.com/CoderAnush/EvoNAS/releases/tag/v0.8.0
 [v0.7.0]: https://github.com/CoderAnush/EvoNAS/releases/tag/v0.7.0
 [v0.6.0]: https://github.com/CoderAnush/EvoNAS/releases/tag/v0.6.0
 [v0.5.0]: https://github.com/CoderAnush/EvoNAS/releases/tag/v0.5.0

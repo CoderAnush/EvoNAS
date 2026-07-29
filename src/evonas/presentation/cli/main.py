@@ -193,6 +193,22 @@ def build_parser() -> argparse.ArgumentParser:
         help="Path to closed-loop artifact directory",
     )
 
+    dash = sub.add_parser(
+        "dashboard",
+        help="Launch the AI Operations Dashboard (Streamlit, Phase 8)",
+    )
+    dash.add_argument("--port", type=int, default=8501, help="Streamlit server port")
+    dash.add_argument(
+        "--demo",
+        action="store_true",
+        help="Start in Demo Mode (synthetic/replay data, no training)",
+    )
+    dash.add_argument(
+        "--headless",
+        action="store_true",
+        help="Run Streamlit headless (CI / remote)",
+    )
+
     learn = sub.add_parser(
         "learn",
         help="Run continuous learning cycle(s) — recommendations only (Phase 7)",
@@ -400,6 +416,15 @@ def main(argv: list[str] | None = None) -> int:
         payload = InspectClosedLoopUseCase().inspect(args.run_dir)
         print(json.dumps(payload, indent=2, default=str))
         return 0
+
+    if args.command == "dashboard":
+        from evonas.presentation.dashboard.launcher import launch_dashboard
+
+        return launch_dashboard(
+            port=int(args.port),
+            demo=bool(args.demo),
+            headless=bool(args.headless),
+        )
 
     if args.command == "learn":
         from evonas.application.continuous.use_cases import ContinuousLearningUseCase

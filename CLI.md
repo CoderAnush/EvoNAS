@@ -11,6 +11,7 @@ evonas compare-optimizers --config PATH [--out DIR]
 evonas run-loop --config PATH [--out DIR] [--dry-run] [--max-cycles N]
 evonas simulate-loop --config PATH [--out DIR] [--max-cycles N]
 evonas inspect-loop --run-dir DIR
+evonas dashboard [--demo] [--port 8501]
 evonas learn --config PATH [--out DIR] [--cycles N]
 evonas detect-data --config PATH [--out DIR]
 evonas replay-learning --history PATH [--out DIR]
