@@ -6,7 +6,7 @@ import evonas
 
 
 def test_import_evonas() -> None:
-    assert evonas.__version__ == "0.4.0"
+    assert evonas.__version__ == "0.5.0"
 
 
 def test_domain_does_not_import_torch() -> None:

@@ -141,10 +141,11 @@ class StandardPSO:
         assert self._space is not None and self._rng is not None
         assert self._swarm.gbest_position is not None
         lows, highs = self._space.bounds()
+        w, c1, c2 = self._get_velocity_coeffs()
         vel_cfg = VelocityConfig(
-            w=self._config.w,
-            c1=self._config.c1,
-            c2=self._config.c2,
+            w=w,
+            c1=c1,
+            c2=c2,
             kappa=self._config.kappa,
         )
         prev_best = float(self._swarm.gbest_fitness or float("-inf"))
@@ -271,10 +272,17 @@ class StandardPSO:
         particle.metadata["last_fitness"] = fitness.to_dict()
         return fitness
 
+    def _get_velocity_coeffs(self) -> tuple[float, float, float]:
+        """Return ``(w, c1, c2)`` for this iteration.
+
+        Standard PSO returns fixed config values. SAPSO overrides this hook
+        without changing StandardPSO fixed-coefficient behaviour.
+        """
+        return self._config.w, self._config.c1, self._config.c2
+
     def _record_state(self) -> SwarmState:
-        state = self._swarm.snapshot(
-            w=self._config.w, c1=self._config.c1, c2=self._config.c2
-        )
+        w, c1, c2 = self._get_velocity_coeffs()
+        state = self._swarm.snapshot(w=w, c1=c1, c2=c2)
         self._history.append(
             IterationRecord.from_swarm_state(
                 state,

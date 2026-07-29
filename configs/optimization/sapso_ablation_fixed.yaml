@@ -1,0 +1,23 @@
+# Ablation profile — fixed Standard PSO baseline under comparison budgets
+run_id: sapso_ablation_fixed
+seed: 42
+
+search_space:
+  path: configs/search_spaces/sphere_2d.yaml
+
+optimization:
+  algorithm: pso
+  swarm_size: 12
+  max_iterations: 20
+  w: 0.729
+  c1: 1.49445
+  c2: 1.49445
+  log_particles: false
+
+fitness:
+  mode: mock
+  landscape: sphere
+  sense: maximize
+
+experiment:
+  artifacts_root: artifacts/optimization

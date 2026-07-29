@@ -130,12 +130,31 @@ class OptimizeUseCase:
         if dry_run:
             fitness_mode = "mock"
 
-        pso = StandardPSO(
-            pso_cfg,
-            initializer=initializer,
-            position_repair=None if fitness_mode == "mock" else adapter.repair_particle,
-            checkpoint_dir=run_dir / "checkpoints",
-        )
+        algo = str(opt_block.get("algorithm", cfg.get("algorithm", "pso"))).lower()
+        repair = None if fitness_mode == "mock" else adapter.repair_particle
+        if algo in {"sapso", "adaptive", "self_adaptive"}:
+            from evonas.domain.optimization.adaptive import AdaptiveConfig
+            from evonas.domain.optimization.sapso import SelfAdaptivePSO
+
+            adapt_raw = cfg.get("adaptation", opt_block.get("adaptation", {})) or {}
+            adapt_block = dict(adapt_raw) if isinstance(adapt_raw, dict) else {}
+            adaptive_cfg = AdaptiveConfig.from_dict(adapt_block)
+            pso: Any = SelfAdaptivePSO(
+                pso_cfg,
+                adaptive_config=adaptive_cfg,
+                initializer=initializer,
+                position_repair=repair,
+                checkpoint_dir=run_dir / "checkpoints",
+            )
+            algo_name = "sapso"
+        else:
+            pso = StandardPSO(
+                pso_cfg,
+                initializer=initializer,
+                position_repair=repair,
+                checkpoint_dir=run_dir / "checkpoints",
+            )
+            algo_name = "standard_pso"
 
         if fitness_mode == "mock":
             landscape = str(cfg.get("fitness", {}).get("landscape", "sphere"))
@@ -186,9 +205,24 @@ class OptimizeUseCase:
                 logger.warning("Could not decode best architecture: %s", exc)
 
         plots = PSOVisualizer().plot_all(history, run_dir / "plots")
+        adaptive_payload = None
+        if algo_name == "sapso" and hasattr(pso, "export_adaptive_history"):
+            from evonas.domain.optimization.adaptive_history import AdaptiveHistoryRecorder
+
+            adaptive_payload = pso.export_adaptive_history()
+            recorder = AdaptiveHistoryRecorder()
+            recorder.export_json(adaptive_payload, run_dir / "adaptive_history.json")
+            recorder.export_csv(adaptive_payload, run_dir / "adaptive_history.csv")
+            recorder.export_transitions_csv(
+                adaptive_payload, run_dir / "state_transitions.csv"
+            )
+            plots.update(
+                PSOVisualizer().plot_adaptive(adaptive_payload, run_dir / "plots")
+            )
+
         summary: dict[str, Any] = {
             "run_id": run_id,
-            "algorithm": "standard_pso",
+            "algorithm": algo_name,
             "dry_run": dry_run,
             "fitness_mode": fitness_mode,
             "best_fitness": result.best_fitness,
@@ -203,6 +237,7 @@ class OptimizeUseCase:
             "cache": getattr(evaluator, "cache_stats", lambda: {})(),
             "evonas_version": __version__,
             "seed": seed,
+            "adaptive_records": len(adaptive_payload["records"]) if adaptive_payload else 0,
         }
         if verbose:
             logger.info("PSO summary: %s", json.dumps(summary, indent=2, default=str))

@@ -98,7 +98,7 @@ def build_parser() -> argparse.ArgumentParser:
 
     opt = sub.add_parser(
         "optimize",
-        help="Run Standard PSO architecture search (Phase 4 — fixed w/c1/c2)",
+        help="Run Standard PSO or SAPSO from YAML (algorithm selected in config)",
     )
     opt.add_argument(
         "--config",
@@ -119,6 +119,21 @@ def build_parser() -> argparse.ArgumentParser:
         "--verbose",
         action="store_true",
         help="Verbose progress logging",
+    )
+
+    cmp = sub.add_parser(
+        "compare-optimizers",
+        help="Compare Standard PSO vs SAPSO under identical seeds (Phase 5)",
+    )
+    cmp.add_argument(
+        "--config",
+        default="configs/optimization/pso_vs_sapso.yaml",
+        help="Comparison YAML config",
+    )
+    cmp.add_argument(
+        "--out",
+        default=None,
+        help="Output artifacts directory",
     )
     return parser
 
@@ -237,6 +252,13 @@ def main(argv: list[str] | None = None) -> int:
             verbose=bool(args.verbose),
         )
         print(json.dumps(summary, indent=2, default=str))
+        return 0
+
+    if args.command == "compare-optimizers":
+        from evonas.application.compare_optimizers import CompareOptimizersUseCase
+
+        comparison = CompareOptimizersUseCase().run(args.config, output_dir=args.out)
+        print(json.dumps(comparison, indent=2, default=str))
         return 0
 
     if args.command in {"run", "replay"}:

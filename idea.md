@@ -3,7 +3,7 @@
 **Document Classification:** Internal Engineering Design Specification  
 **Document Status:** Canonical — Binding for All Implementation Decisions  
 **Document Version:** 1.1.0  
-**Branding:** EvoNAS (renamed from working title AutoEvo)  
+**Branding:** EvoNAS 
 **Effective Date:** 2026-07-28  
 **Owning Role:** Chief Architect / Principal Research Engineer  
 **Audience:** All engineers, researchers, and agents contributing to EvoNAS  

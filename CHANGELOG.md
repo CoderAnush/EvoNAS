@@ -5,6 +5,34 @@ All notable changes to EvoNAS are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [v0.5.0] — 2026-07-29
+
+### Added
+
+- Self-Adaptive PSO (SAPSO) engine (Phase 5)
+- `AdaptiveController`, `ParameterScheduler`, `AdaptiveStateMachine`, `AdaptiveConfig`
+- Normalized diversity metrics (`diversity.py`)
+- `SelfAdaptivePSO` extending `StandardPSO` via `_get_velocity_coeffs()` hook
+- Adaptive history recorder (JSON/CSV + state transitions)
+- Adaptive coefficient / diversity / phase visualization
+- `BenchmarkRunner` and `OptimizerComparison`
+- `CompareOptimizersUseCase` + CLI `evonas compare-optimizers`
+- Configs: `configs/pso/adaptive.yaml`, `adaptive_mock.yaml`, `configs/optimization/*`
+- Port `IAdaptiveController`
+- Phase 5 report and release notes
+- Expanded optimization tests (**84 passing**)
+
+### Changed
+
+- `StandardPSO` exposes `_get_velocity_coeffs()` extension hook (fixed values unchanged)
+- `OptimizeUseCase` selects `pso` vs `sapso` from YAML `optimization.algorithm`
+- Package version bumped to **0.5.0**
+
+### Notes
+
+- Adaptation is deterministic and behaviour-driven — not random schedules.
+- No closed-loop / continuous-learning behaviour in this release.
+
 ## [v0.4.0] — 2026-07-28
 
 ### Added
@@ -104,6 +132,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - No neural network training, PSO, or closed-loop controller in this release.
 - Production optimization engine remains SAPSO-only per `idea.md` (implemented in later phases).
 
+[v0.5.0]: https://github.com/CoderAnush/EvoNAS/releases/tag/v0.5.0
 [v0.4.0]: https://github.com/CoderAnush/EvoNAS/releases/tag/v0.4.0
 [v0.3.0]: https://github.com/CoderAnush/EvoNAS/releases/tag/v0.3.0
 [v0.2.0]: https://github.com/CoderAnush/EvoNAS/releases/tag/v0.2.0

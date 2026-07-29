@@ -1,0 +1,42 @@
+# idea.md Phase 5 folder convention — SAPSO default (delegates to configs/pso/adaptive.yaml semantics)
+run_id: sapso_default
+seed: 42
+
+search_space:
+  path: configs/search_spaces/sphere_2d.yaml
+
+optimization:
+  algorithm: sapso
+  swarm_size: 12
+  max_iterations: 20
+  w: 0.729
+  c1: 1.49445
+  c2: 1.49445
+  log_particles: false
+
+adaptation:
+  inertia:
+    w_min: 0.4
+    w_max: 0.9
+    w_refine: 0.35
+    alpha: 0.5
+    beta: 0.3
+    gamma: 0.2
+    eta_slow: 0.001
+    eta_good: 0.01
+    improvement_window: 5
+  acceleration:
+    c_min: 0.5
+    c_max: 2.5
+    c_sum: 4.1
+    delta_collapse: 0.05
+    delta_high: 0.35
+  stagnation_iters: 8
+
+fitness:
+  mode: mock
+  landscape: sphere
+  sense: maximize
+
+experiment:
+  artifacts_root: artifacts/optimization

@@ -10,6 +10,7 @@ from evonas.domain.optimization.particle import Particle
 from evonas.domain.optimization.result import SearchResult
 from evonas.domain.optimization.swarm import SwarmState
 from evonas.domain.search_space.space import SearchSpace
+from evonas.ports.adaptive import IAdaptiveController
 
 
 @runtime_checkable
@@ -56,6 +57,7 @@ class ISearchAlgorithm(Protocol):
 
 
 __all__ = [
+    "IAdaptiveController",
     "IFitnessCalculator",
     "IFitnessEvaluator",
     "ISearchAlgorithm",
