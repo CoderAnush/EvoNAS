@@ -2,30 +2,17 @@
 
 from __future__ import annotations
 
-import hashlib
 import logging
 
 import numpy as np
 
 from evonas.domain.common.enums import Split
 from evonas.domain.common.errors import DataError
+from evonas.domain.common.hashing import sha256_array, sha256_bytes
 
 logger = logging.getLogger(__name__)
 
-
-def sha256_array(array: np.ndarray) -> str:
-    """Compute a SHA-256 hex digest over a NumPy array's raw bytes + shape/dtype."""
-    arr = np.ascontiguousarray(array)
-    h = hashlib.sha256()
-    h.update(str(arr.shape).encode("utf-8"))
-    h.update(str(arr.dtype).encode("utf-8"))
-    h.update(arr.tobytes())
-    return h.hexdigest()
-
-
-def sha256_bytes(data: bytes) -> str:
-    """SHA-256 hex digest of arbitrary bytes."""
-    return hashlib.sha256(data).hexdigest()
+__all__ = ["sha256_array", "sha256_bytes", "make_splits"]
 
 
 def make_splits(

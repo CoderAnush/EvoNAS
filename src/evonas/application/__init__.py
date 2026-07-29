@@ -1,1 +1,1 @@
-"""Application package (Phase 1: placeholder for future closed-loop use cases)."""
+"""Application package — use-cases and orchestration (Phases 2–7)."""

@@ -12,8 +12,8 @@ EvoNAS is an **autonomous AI lifecycle management platform** that continuously m
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?logo=python&logoColor=white)](https://www.python.org/)
-[![Status](https://img.shields.io/badge/Status-Phase%206%20Complete%20(v0.6.0)-brightgreen)](docs/phase_reports/phase6.md)
-[![Version](https://img.shields.io/badge/Version-v0.6.0-informational)](CHANGELOG.md)
+[![Status](https://img.shields.io/badge/Status-Phase%207%20Complete%20(v0.7.0)-brightgreen)](docs/phase_reports/phase7.md)
+[![Version](https://img.shields.io/badge/Version-v0.7.0-informational)](CHANGELOG.md)
 [![Research](https://img.shields.io/badge/Research-IEEE%20Oriented-0A66C2)](idea.md)
 [![AutoML](https://img.shields.io/badge/AutoML-Closed%20Loop-6f42c1)](idea.md)
 [![Deep Learning](https://img.shields.io/badge/Deep%20Learning-PyTorch%20%7C%20TensorFlow-EE4C2C)](idea.md)
@@ -401,7 +401,7 @@ EvoNAS/
 | **Deployment** | Localhost inference, Docker Compose, future cloud adapters |
 | **Experiment Tracking** | First-party experiment manifests + artifact store (MLflow adapter future) |
 | **Visualization** | Matplotlib / Plotly via Visualization Engine |
-| **Packaging** | `pyproject.toml`, optional extras (`pytorch`, `tensorflow`, `api`, `dashboard`, `dev`, `research`) |
+| **Packaging** | `pyproject.toml`, optional extras (`pytorch`, `dev`) — `api` / `dashboard` / `tensorflow` planned for later phases |
 
 ---
 
@@ -453,9 +453,10 @@ Implementation status tracks the Master Specification phases. Checklist items ar
 - [x] Phase 6 freeze report (`docs/phase_reports/phase6.md`)
 
 ### Phase 7 — Continuous Learning Engine
-- [ ] Data windows + retention
-- [ ] Drift-triggered recommendations
-- [ ] Multi-cycle unsupervised operation
+- [x] Data windows + retention + stream simulation cursors
+- [x] Drift-driven recommendations (`HOLD` / `RETRAIN` / `OPTIMIZE`) — Decision Engine still authorizes
+- [x] Dataset versioning, lineage, change detection, CLI (`learn` / `detect-data` / `replay-learning`)
+- [x] Phase 7 freeze report (`docs/phase_reports/phase7.md`)
 
 ### Phase 8 — Deployment Manager
 - [ ] Localhost staging / promote / LKG
@@ -550,7 +551,7 @@ python -m venv .venv
 # Unix:    source .venv/bin/activate
 
 pip install -e ".[dev]"
-# Optional: pip install -e ".[pytorch,api,dashboard,dev]"
+# Optional: pip install -e ".[pytorch,dev]"
 ```
 
 ### Verify
@@ -606,8 +607,9 @@ evonas api
 | Standard PSO architecture search | ✅ Phase 4 (`v0.4.0`) |
 | Self-Adaptive PSO (SAPSO) | ✅ Phase 5 (`v0.5.0`) |
 | Closed-loop controller (observe→decide→optimize→validate→promote) | ✅ Phase 6 (`v0.6.0`) |
-| Phase reports | ✅ `docs/phase_reports/phase{1,2,3,4,5,6}.md` |
-| Continuous learning / deploy | ⏳ Phase 7–8 |
+| Continuous learning / data evolution | ✅ Phase 7 (`v0.7.0`) |
+| Phase reports | ✅ `docs/phase_reports/phase{1,2,3,4,5,6,7}.md` |
+| Deployment / dashboard | ⏳ Phase 8–9 |
 | Dashboard Replay | ⏳ Phase 9+ |
 
 ---
@@ -623,11 +625,22 @@ evonas api
 | [`docs/phase_reports/phase4.md`](docs/phase_reports/phase4.md) | **Available** | Phase 4 Standard PSO report |
 | [`docs/phase_reports/phase5.md`](docs/phase_reports/phase5.md) | **Available** | Phase 5 SAPSO report |
 | [`docs/phase_reports/phase6.md`](docs/phase_reports/phase6.md) | **Available** | Phase 6 closed-loop controller report |
+| [`docs/phase_reports/phase7.md`](docs/phase_reports/phase7.md) | **Available** | Phase 7 continuous learning report |
+| [`docs/rc1/`](docs/rc1/README.md) | **Available** | v0.7.0 RC1 freeze package |
+| [`docs/demo/`](docs/demo/DEMO_SCRIPT.md) | **Available** | Professor demo (&lt;10 min) |
+| [`docs/research/`](docs/research/EXPERIMENT_PLAN.md) | **Available** | Research planning (no runs yet) |
+| [`DEVELOPER_GUIDE.md`](DEVELOPER_GUIDE.md) | **Available** | Contributor onboarding |
+| [`CLI.md`](CLI.md) | **Available** | CLI reference |
+| [`CONFIGURATION.md`](CONFIGURATION.md) | **Available** | Config map |
+| [`SYSTEM_WORKFLOW.md`](SYSTEM_WORKFLOW.md) | **Available** | End-to-end workflow |
+| [`ROADMAP_STATUS.md`](ROADMAP_STATUS.md) | **Available** | Phase status table |
+| [`RELEASE_CHECKLIST.md`](RELEASE_CHECKLIST.md) | **Available** | v0.7.0 release checklist |
 | [`docs/RELEASE_NOTES_v0.2.0.md`](docs/RELEASE_NOTES_v0.2.0.md) | **Available** | v0.2.0 release notes |
 | [`docs/RELEASE_NOTES_v0.3.0.md`](docs/RELEASE_NOTES_v0.3.0.md) | **Available** | v0.3.0 release notes |
 | [`docs/RELEASE_NOTES_v0.4.0.md`](docs/RELEASE_NOTES_v0.4.0.md) | **Available** | v0.4.0 release notes |
 | [`docs/RELEASE_NOTES_v0.5.0.md`](docs/RELEASE_NOTES_v0.5.0.md) | **Available** | v0.5.0 release notes |
 | [`docs/RELEASE_NOTES_v0.6.0.md`](docs/RELEASE_NOTES_v0.6.0.md) | **Available** | v0.6.0 release notes |
+| [`docs/RELEASE_NOTES_v0.7.0.md`](docs/RELEASE_NOTES_v0.7.0.md) | **Available** | v0.7.0 release notes |
 | `ROADMAP.md` | Coming Soon | Phase tracking derived from `idea.md` |
 | `ARCHITECTURE.md` | Coming Soon | Architecture digest for contributors |
 | `CONTRIBUTING.md` | Coming Soon | Contribution process and review standards |

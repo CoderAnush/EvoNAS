@@ -5,6 +5,36 @@ All notable changes to EvoNAS are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [v0.7.0] — 2026-07-29
+
+### Added
+
+- Continuous Learning & Data Evolution Engine (Phase 7)
+- `ContinuousLearningEngine` — detect → validate → version → drift → recommend
+- `DataVersionManager`, `DatasetChangeDetector`, `IncrementalDatasetBuilder`
+- `LearningPolicy` recommendations (`HOLD` / `RETRAIN_SAME_ARCH` / `OPTIMIZE_ARCH`)
+- Dataset lineage, learning events, retention, window cursors, deterministic replay
+- Drift integration via Phase 1 PSI/KS (`IDatasetManager` / `detect_shift`) — no duplicated math
+- History export (JSON/CSV) + matplotlib visualizations
+- Configs: `configs/continuous_learning/default.yaml`, `configs/continuous/default.yaml`
+- CLI: `evonas learn`, `detect-data`, `replay-learning`
+- Ports: `IContinuousLearningEngine`, `IDataVersionManager`, `IDatasetChangeDetector`, `ILearningPolicy`
+- Optional ClosedLoopController observation merge via `to_observation()` only
+- Phase 7 report and release notes
+- Continuous-learning test suite
+
+### Changed
+
+- Package version bumped to **0.7.0**
+- README roadmap marks Phase 7 complete
+- RC1 freeze polish: domain hashing helpers; continuous plots via application layer; README extras aligned
+
+### Notes
+
+- Learning policies never authorize optimization — Decision Engine remains sole authority.
+- Phase 1 data abstractions, Standard PSO, and SAPSO are unmodified.
+- Release Candidate package documented under `docs/rc1/` (READY FOR PHASE 8 after tag push).
+
 ## [v0.6.0] — 2026-07-29
 
 ### Added
@@ -162,6 +192,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - No neural network training, PSO, or closed-loop controller in this release.
 - Production optimization engine remains SAPSO-only per `idea.md` (implemented in later phases).
 
+[v0.7.0]: https://github.com/CoderAnush/EvoNAS/releases/tag/v0.7.0
 [v0.6.0]: https://github.com/CoderAnush/EvoNAS/releases/tag/v0.6.0
 [v0.5.0]: https://github.com/CoderAnush/EvoNAS/releases/tag/v0.5.0
 [v0.4.0]: https://github.com/CoderAnush/EvoNAS/releases/tag/v0.4.0

@@ -192,6 +192,57 @@ def build_parser() -> argparse.ArgumentParser:
         required=True,
         help="Path to closed-loop artifact directory",
     )
+
+    learn = sub.add_parser(
+        "learn",
+        help="Run continuous learning cycle(s) — recommendations only (Phase 7)",
+    )
+    learn.add_argument(
+        "--config",
+        default="configs/continuous_learning/default.yaml",
+        help="Continuous learning YAML config",
+    )
+    learn.add_argument(
+        "--out",
+        default=None,
+        help="Output artifacts directory",
+    )
+    learn.add_argument(
+        "--cycles",
+        type=int,
+        default=2,
+        help="Number of simulation cycles",
+    )
+
+    detect = sub.add_parser(
+        "detect-data",
+        help="Detect dataset changes (Phase 7 simulation)",
+    )
+    detect.add_argument(
+        "--config",
+        default="configs/continuous_learning/default.yaml",
+        help="Continuous learning YAML config",
+    )
+    detect.add_argument(
+        "--out",
+        default=None,
+        help="Output artifacts directory",
+    )
+
+    replay_l = sub.add_parser(
+        "replay-learning",
+        help="Deterministically replay a learning history JSON (Phase 7)",
+    )
+    replay_l.add_argument(
+        "--history",
+        required=True,
+        help="Path to learning_history.json",
+    )
+    replay_l.add_argument(
+        "--out",
+        default=None,
+        help="Output artifacts directory",
+    )
     return parser
 
 
@@ -347,6 +398,37 @@ def main(argv: list[str] | None = None) -> int:
         from evonas.application.closed_loop.use_cases import InspectClosedLoopUseCase
 
         payload = InspectClosedLoopUseCase().inspect(args.run_dir)
+        print(json.dumps(payload, indent=2, default=str))
+        return 0
+
+    if args.command == "learn":
+        from evonas.application.continuous.use_cases import ContinuousLearningUseCase
+
+        summary = ContinuousLearningUseCase().learn(
+            args.config,
+            output_dir=args.out,
+            cycles=int(args.cycles),
+        )
+        print(json.dumps(summary, indent=2, default=str))
+        return 0
+
+    if args.command == "detect-data":
+        from evonas.application.continuous.use_cases import ContinuousLearningUseCase
+
+        payload = ContinuousLearningUseCase().detect_data(
+            args.config,
+            output_dir=args.out,
+        )
+        print(json.dumps(payload, indent=2, default=str))
+        return 0
+
+    if args.command == "replay-learning":
+        from evonas.application.continuous.use_cases import ContinuousLearningUseCase
+
+        payload = ContinuousLearningUseCase().replay_learning(
+            args.history,
+            output_dir=args.out,
+        )
         print(json.dumps(payload, indent=2, default=str))
         return 0
 

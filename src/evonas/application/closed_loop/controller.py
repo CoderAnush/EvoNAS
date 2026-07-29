@@ -51,12 +51,15 @@ class ClosedLoopController:
         validation_engine: ValidationEngine | None = None,
         promotion_manager: PromotionManager | None = None,
         optimize_use_case: OptimizeUseCase | None = None,
+        continuous_learning: Any | None = None,
     ) -> None:
         self._cfg = config
         self._config_path = Path(config_path) if config_path else None
         self._simulate = bool(simulate)
         self._dry_run = bool(dry_run or simulate or config.get("simulate", False))
         self._config_manager = config_manager or ConfigurationManager()
+        # Optional Phase 7 engine — consumed only via IContinuousLearningEngine.to_observation()
+        self._continuous_learning = continuous_learning
 
         policy_path = (
             config.get("policy", {}).get("path")
@@ -278,17 +281,36 @@ class ClosedLoopController:
             hours_since_last_optimization=hours_since,
         )
         drift_cfg = dict(self._cfg.get("observation", {}) or {})
+        # Phase 7: merge published CL observation without owning data evolution logic
+        if self._continuous_learning is not None and hasattr(
+            self._continuous_learning, "to_observation"
+        ):
+            cl_obs = dict(self._continuous_learning.to_observation() or {})
+            drift_cfg = {**drift_cfg, **cl_obs}
         drift_status = str(drift_cfg.get("drift_status", "none"))
         force = bool(drift_cfg.get("force_optimization", False))
+        dataset_version = str(
+            drift_cfg.get("dataset_version")
+            or self._cfg.get("dataset", {}).get("config_path", "toy_quick")
+        )
+        experiment_metadata: dict[str, Any] = {
+            "experiment_id": self._run_id,
+            "simulate": self._simulate,
+            "algorithm": self._algorithm,
+        }
+        if drift_cfg.get("cl_recommendation") is not None:
+            experiment_metadata["cl_recommendation"] = drift_cfg.get("cl_recommendation")
+            experiment_metadata["cl_reason"] = drift_cfg.get("cl_reason")
+            experiment_metadata["data_availability"] = drift_cfg.get(
+                "data_availability", True
+            )
         ctx = DecisionContext(
             mode="simulate" if self._simulate else "quick",
             system_mode=self._state.value,
             current_model_id=self._current_model_id,
             current_metrics=dict(self._current_metrics),
             best_metrics=dict(self._best_metrics),
-            dataset_version=str(
-                self._cfg.get("dataset", {}).get("config_path", "toy_quick")
-            ),
+            dataset_version=dataset_version,
             drift_status=drift_status,
             drift_report=dict(drift_cfg.get("drift_report", {}) or {}),
             optimization_state="idle",
@@ -301,11 +323,7 @@ class ClosedLoopController:
                 if self._policy.accuracy_floor > 0
                 else None
             ),
-            experiment_metadata={
-                "experiment_id": self._run_id,
-                "simulate": self._simulate,
-                "algorithm": self._algorithm,
-            },
+            experiment_metadata=experiment_metadata,
         )
         self._history.add_event(
             "observe", metrics=ctx.current_metrics, drift=drift_status

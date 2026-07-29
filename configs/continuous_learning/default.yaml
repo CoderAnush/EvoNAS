@@ -1,0 +1,41 @@
+# Continuous Learning — canonical Phase 7 config (prefer this path)
+# Alias also exists at configs/continuous/default.yaml (idea.md naming).
+# Engine accepts either `continuous_learning:` or `continuous:` keys.
+run_id: continuous_learning_default
+seed: 42
+simulate: true
+
+continuous_learning:
+  simulate: true
+  merge_strategy: append
+  window_size: 50
+  sample_fraction: 1.0
+  artifacts_root: artifacts/continuous_learning
+  policy:
+    min_new_samples: 10
+    max_drift_psi: 0.25
+    mild_drift_psi: 0.1
+    retrain_cooldown_hours: 0.0
+    min_confidence: 0.0
+    optimize_on_schema_change: true
+    optimize_on_significant_drift: true
+    allow_retrain_on_mild_drift: true
+  retention:
+    max_versions: 20
+    keep_latest: 5
+    delete_raw_arrays: false
+
+simulation:
+  n_reference: 100
+  n_new: 30
+  feature_shift: 0.5
+
+# Optional: wire a Phase 1 dataset for windowed stream simulation
+# dataset:
+#   config_path: configs/datasets/toy_quick.yaml
+
+logging:
+  level: INFO
+
+experiment:
+  artifacts_root: artifacts/continuous_learning
