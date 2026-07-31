@@ -17,6 +17,13 @@ PAGES = [
     "Replay Center",
     "Benchmarks",
     "Artifact Browser",
+    "Registry",
+    "Models",
+    "Datasets",
+    "Lifecycle",
+    "Lineage",
+    "Version Graph",
+    "History",
     "System Health",
     "Settings",
 ]

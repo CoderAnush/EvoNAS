@@ -141,3 +141,9 @@ class ApiDashboardService:
 
     def list_baseline_runs(self) -> list[str]:
         return []
+
+    def registry_bundle(self) -> dict[str, Any]:
+        return _as_dict(self._get("/api/v1/dashboard/registry"))
+
+    def registry_lineage(self, object_id: str) -> dict[str, Any]:
+        return _as_dict(self._get(f"/api/v1/registry/lineage/{quote(object_id, safe='')}"))

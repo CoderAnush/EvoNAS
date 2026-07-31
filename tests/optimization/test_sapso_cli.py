@@ -48,4 +48,4 @@ def test_compare_cli(tmp_path: Path, capsys) -> None:
 
 def test_version_0_8(capsys) -> None:
     assert main(["version"]) == 0
-    assert capsys.readouterr().out.strip() == "1.0.0rc1"
+    assert capsys.readouterr().out.strip() == "1.0.0rc2"

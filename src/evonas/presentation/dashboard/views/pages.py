@@ -348,11 +348,106 @@ def render_settings(svc: Any) -> None:
             st.json(configs.get(name) or {})
 
 
+def render_registry(svc: Any) -> None:
+    """Governance registry overview."""
+    import streamlit as st
+
+    hero("Registry", "Unified governance index (metadata only)")
+    data = svc.registry_bundle() if hasattr(svc, "registry_bundle") else {}
+    overview = data.get("overview") or {}
+    counts = overview.get("counts") or {}
+    cols = st.columns(4)
+    for i, key in enumerate(["model", "experiment", "dataset", "artifact"]):
+        cols[i % 4].metric(key, counts.get(key, 0))
+    c1, c2 = st.columns(2)
+    c1.metric("promotions", counts.get("promotion", 0))
+    c2.metric("rollbacks", counts.get("rollback", 0))
+    with st.expander("Raw overview"):
+        st.json(overview)
+
+
+def render_models(svc: Any) -> None:
+    """Model registry browser."""
+    import streamlit as st
+
+    hero("Models", "Versioned model metadata + stages")
+    data = svc.registry_bundle() if hasattr(svc, "registry_bundle") else {}
+    models = data.get("models") or []
+    if not models:
+        st.info("No models indexed — run `evonas registry sync`.")
+        return
+    st.dataframe(models, use_container_width=True)
+
+
+def render_datasets_registry(svc: Any) -> None:
+    """Dataset registry browser."""
+    import streamlit as st
+
+    hero("Datasets", "Dataset versions and lineage pointers")
+    data = svc.registry_bundle() if hasattr(svc, "registry_bundle") else {}
+    rows = data.get("datasets") or []
+    if not rows:
+        st.info("No dataset versions indexed yet.")
+        return
+    st.dataframe(rows, use_container_width=True)
+
+
+def render_lifecycle_registry(svc: Any) -> None:
+    """Lifecycle / stage graphs."""
+    import streamlit as st
+
+    hero("Lifecycle", "Configurable governance state machines")
+    data = svc.registry_bundle() if hasattr(svc, "registry_bundle") else {}
+    life = data.get("lifecycle") or {}
+    st.code(life.get("mermaid") or "", language="text")
+    st.subheader("Model stages")
+    st.code(life.get("stages_mermaid") or "", language="text")
+
+
+def render_lineage(svc: Any) -> None:
+    """Lineage explorer."""
+    import streamlit as st
+
+    hero("Lineage", "Dataset → Training → Model → Promotion")
+    object_id = st.text_input("Object id", value="")
+    if object_id and hasattr(svc, "registry_lineage"):
+        graph = svc.registry_lineage(object_id)
+        st.code(graph.get("mermaid") or "", language="text")
+        st.json(graph)
+    else:
+        data = svc.registry_bundle() if hasattr(svc, "registry_bundle") else {}
+        st.json((data.get("overview") or {}).get("lineage") or {})
+
+
+def render_version_graph(svc: Any) -> None:
+    """Version / stage graph view."""
+    import streamlit as st
+
+    hero("Version Graph", "Model stage transitions")
+    data = svc.registry_bundle() if hasattr(svc, "registry_bundle") else {}
+    life = data.get("lifecycle") or {}
+    st.code(life.get("stages_mermaid") or "", language="text")
+    st.subheader("Models")
+    st.dataframe(data.get("models") or [], use_container_width=True)
+
+
+def render_history_registry(svc: Any) -> None:
+    """Promotion / rollback history."""
+    import streamlit as st
+
+    hero("History", "Promotion and rollback metadata (no live deploy)")
+    data = svc.registry_bundle() if hasattr(svc, "registry_bundle") else {}
+    st.subheader("Promotions")
+    st.dataframe(data.get("promotions") or [], use_container_width=True)
+    st.subheader("Rollbacks")
+    st.dataframe(data.get("rollbacks") or [], use_container_width=True)
+
+
 def _run_selector_opt(svc: Any) -> None:
     import streamlit as st
 
     runs = svc.list_optimization_runs()
-    if not runs or svc.ctx.demo_mode:
+    if not runs or getattr(getattr(svc, "ctx", None), "demo_mode", False):
         return
     labels = [str(r) for r in runs]
     choice = st.selectbox("Optimization run", labels, key="opt_run_select")
@@ -380,6 +475,13 @@ RENDERERS = {
     "Replay Center": render_replay,
     "Benchmarks": render_benchmarks,
     "Artifact Browser": render_artifacts,
+    "Registry": render_registry,
+    "Models": render_models,
+    "Datasets": render_datasets_registry,
+    "Lifecycle": render_lifecycle_registry,
+    "Lineage": render_lineage,
+    "Version Graph": render_version_graph,
+    "History": render_history_registry,
     "System Health": render_health,
     "Settings": render_settings,
 }

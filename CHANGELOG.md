@@ -5,6 +5,29 @@ All notable changes to EvoNAS are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [v1.0.0-rc2] — 2026-07-31
+
+### Added
+
+- AI Governance, Registry & Lifecycle Platform (Phase 11)
+- File-backed `FileGovernanceRegistry` under `artifacts/registry/`
+- Model stages with single-production invariant + LKG metadata snapshots
+- Experiment / dataset / artifact indexes, search, lineage graphs
+- Configurable lifecycle transitions + Mermaid visualizations
+- Promotion / rollback metadata ledgers (no live deployment mutation)
+- CLI: `registry`, `models`, `experiments`, `lineage`, `artifacts`
+- Additive API `/api/v1/registry/*` and `/api/v1/models/*`
+- Dashboard pages: Registry, Models, Datasets, Lifecycle, Lineage, Version Graph, History
+- Ops guides: Registry / Lifecycle / Lineage / Governance
+
+### Changed
+
+- Package version bumped to **1.0.0rc2**
+
+### Notes
+
+- Algorithms and experiment results are never rewritten by the registry
+
 ## [v1.0.0-rc1] — 2026-07-30
 
 ### Added
@@ -268,6 +291,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - No neural network training, PSO, or closed-loop controller in this release.
 - Production optimization engine remains SAPSO-only per `idea.md` (implemented in later phases).
 
+[v1.0.0-rc2]: https://github.com/CoderAnush/EvoNAS/releases/tag/v1.0.0-rc2
 [v1.0.0-rc1]: https://github.com/CoderAnush/EvoNAS/releases/tag/v1.0.0-rc1
 [v0.9.0]: https://github.com/CoderAnush/EvoNAS/releases/tag/v0.9.0
 [v0.8.0]: https://github.com/CoderAnush/EvoNAS/releases/tag/v0.8.0

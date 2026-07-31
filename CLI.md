@@ -1,4 +1,4 @@
-# CLI.md — EvoNAS Command Reference (v1.0.0-rc1)
+# CLI.md — EvoNAS Command Reference (v1.0.0-rc2)
 
 ```text
 evonas version
@@ -23,6 +23,11 @@ evonas experiment list [--limit N]
 evonas experiment show EXPERIMENT_ID
 evonas compare --config PATH [--out DIR] [--suite]
 evonas report --run-dir DIR [--out PATH]
+evonas registry sync|overview|search [--q Q] [--kind K] [--optimizer O]
+evonas models list|show|stage ...
+evonas experiments [--limit N]
+evonas lineage OBJECT_ID
+evonas artifacts [--limit N]
 ```
 
 ## Notes
@@ -32,4 +37,5 @@ evonas report --run-dir DIR [--out PATH]
 - Simulation / `--dry-run` uses mock fitness (no NN training).
 - Dashboard requires the API (`EVONAS_API_URL`); prefer `evonas serve --demo`.
 - Phase 10 research suite: `configs/benchmarks/default.yaml`.
+- Phase 11 registry config: `configs/registry/registry.yaml`.
 - Extras: `pip install -e ".[api,dashboard,dev]"`.

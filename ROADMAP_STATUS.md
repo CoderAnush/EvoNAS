@@ -13,9 +13,9 @@
 | 8 | AI Operations Dashboard | Done | v0.8.0 |
 | 9 | Platform Services & Deployment | Done | v0.9.0 |
 | 10 | Scientific Evaluation & Experiments | Done | v1.0.0-rc1 |
-| 11 | Model registry | Not started | — |
+| 11 | AI Governance & Model Registry | Done | v1.0.0-rc2 |
 | 12 | Research extensions | Not started | — |
 
-**Note:** `idea.md` originally listed Dashboard as Phase 9 and Deployment as Phase 8. Product delivery shipped Dashboard as **v0.8.0 / Phase 8**, Platform Services as **v0.9.0 / Phase 9**, and scientific evaluation as **v1.0.0-rc1 / Phase 10**.
+**Note:** `idea.md` originally listed Dashboard as Phase 9 and Deployment as Phase 8. Product delivery shipped Dashboard as **v0.8.0 / Phase 8**, Platform Services as **v0.9.0 / Phase 9**, scientific evaluation as **v1.0.0-rc1 / Phase 10**, and governance/registry as **v1.0.0-rc2 / Phase 11**.
 
-**Current release:** v1.0.0-rc1 — reproducible benchmark framework; model registry / paper drafting deferred.
+**Current release:** v1.0.0-rc2 — governance registry complete; paper drafting / cloud auth deferred.

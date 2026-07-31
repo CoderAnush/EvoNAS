@@ -339,6 +339,39 @@ def build_parser() -> argparse.ArgumentParser:
     report_p.add_argument("--run-dir", required=True, help="Research run directory")
     report_p.add_argument("--out", default=None, help="Optional report output path")
 
+    reg = sub.add_parser("registry", help="Governance registry (Phase 11)")
+    reg_sub = reg.add_subparsers(dest="registry_command")
+    reg_sub.add_parser("sync", help="Index existing artifacts into the registry")
+    reg_sub.add_parser("overview", help="Show registry counts / graphs")
+    reg_search = reg_sub.add_parser("search", help="Search registry metadata")
+    reg_search.add_argument("--q", default=None)
+    reg_search.add_argument("--kind", default=None)
+    reg_search.add_argument("--optimizer", default=None)
+    reg_search.add_argument("--limit", type=int, default=50)
+
+    models = sub.add_parser("models", help="Model registry commands (Phase 11)")
+    models_sub = models.add_subparsers(dest="models_command")
+    models_list = models_sub.add_parser("list", help="List models")
+    models_list.add_argument("--limit", type=int, default=50)
+    models_show = models_sub.add_parser("show", help="Show a model")
+    models_show.add_argument("model_id")
+    models_show.add_argument("--version", default=None)
+    models_stage = models_sub.add_parser("stage", help="Set model stage")
+    models_stage.add_argument("model_id")
+    models_stage.add_argument("version")
+    models_stage.add_argument("stage", choices=["none", "staging", "production", "archived"])
+    models_stage.add_argument("--reason", default="")
+
+    # Alias: experiments registry list (governance)
+    gov_exp = sub.add_parser("experiments", help="List governance experiment records (Phase 11)")
+    gov_exp.add_argument("--limit", type=int, default=50)
+
+    lin = sub.add_parser("lineage", help="Show lineage graph for an object id (Phase 11)")
+    lin.add_argument("object_id")
+
+    arts = sub.add_parser("artifacts", help="List governed artifacts (Phase 11)")
+    arts.add_argument("--limit", type=int, default=50)
+
     return parser
 
 
@@ -609,6 +642,86 @@ def main(argv: list[str] | None = None) -> int:
 
         payload = ReportUseCase().run(args.run_dir, out=args.out)
         print(json.dumps(payload, indent=2, default=str))
+        return 0
+
+    if args.command == "registry":
+        from evonas.application.registry.service import GovernanceService
+
+        gov = GovernanceService()
+        if args.registry_command == "sync":
+            print(json.dumps(gov.sync(), indent=2, default=str))
+            return 0
+        if args.registry_command == "overview":
+            print(json.dumps(gov.overview(), indent=2, default=str))
+            return 0
+        if args.registry_command == "search":
+            print(
+                json.dumps(
+                    gov.search(
+                        q=args.q,
+                        kind=args.kind,
+                        optimizer=args.optimizer,
+                        limit=int(args.limit),
+                    ),
+                    indent=2,
+                    default=str,
+                )
+            )
+            return 0
+        print("Usage: evonas registry sync|overview|search")
+        return 1
+
+    if args.command == "models":
+        from evonas.application.registry.service import GovernanceService
+
+        gov = GovernanceService()
+        if args.models_command == "list":
+            print(json.dumps(gov.list_models(limit=int(args.limit)), indent=2, default=str))
+            return 0
+        if args.models_command == "show":
+            rec = gov.get_model(args.model_id, args.version)
+            if rec is None:
+                print(json.dumps({"error": "not_found"}, indent=2))
+                return 1
+            print(json.dumps(rec, indent=2, default=str))
+            return 0
+        if args.models_command == "stage":
+            rec = gov.set_stage(
+                args.model_id, args.version, args.stage, reason=str(args.reason)
+            )
+            print(json.dumps(rec, indent=2, default=str))
+            return 0
+        print("Usage: evonas models list|show|stage")
+        return 1
+
+    if args.command == "experiments":
+        from evonas.application.registry.service import GovernanceService
+
+        print(
+            json.dumps(
+                GovernanceService().list_experiments(limit=int(args.limit)),
+                indent=2,
+                default=str,
+            )
+        )
+        return 0
+
+    if args.command == "lineage":
+        from evonas.application.registry.service import GovernanceService
+
+        print(json.dumps(GovernanceService().lineage(args.object_id), indent=2, default=str))
+        return 0
+
+    if args.command == "artifacts":
+        from evonas.application.registry.service import GovernanceService
+
+        print(
+            json.dumps(
+                GovernanceService().list_artifacts(limit=int(args.limit)),
+                indent=2,
+                default=str,
+            )
+        )
         return 0
 
     if args.command in {"run", "replay"}:

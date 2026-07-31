@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "evonas"
-version = "1.0.0rc1"
+version = "1.0.0rc2"
 description = "EvoNAS — Autonomous Closed-Loop AutoML Platform using Self-Adaptive PSO"
 readme = "README.md"
 requires-python = ">=3.10"

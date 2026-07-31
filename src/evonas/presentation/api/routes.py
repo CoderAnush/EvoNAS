@@ -4,10 +4,11 @@ from __future__ import annotations
 
 import asyncio
 import json
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from fastapi import APIRouter, Depends, HTTPException, Query, WebSocket, WebSocketDisconnect
 from fastapi.responses import FileResponse
+from pydantic import BaseModel, Field
 
 from evonas.application.platform.services import (
     ArtifactService,
@@ -31,6 +32,9 @@ from evonas.presentation.api.schemas import (
     JobResponse,
     ReplayRequest,
 )
+
+if TYPE_CHECKING:
+    from evonas.application.registry.service import GovernanceService
 
 router = APIRouter(prefix="/api/v1")
 
@@ -357,3 +361,159 @@ async def ws_events(websocket: WebSocket) -> None:
         pass
     finally:
         hub.unsubscribe(queue)
+
+
+# ----- Phase 11 Governance / Registry (additive) -----
+
+
+class StageRequest(BaseModel):
+    stage: str = Field(..., examples=["staging", "production", "archived"])
+    reason: str = ""
+
+
+class RegisterModelRequest(BaseModel):
+    model_id: str | None = None
+    version: str = "1"
+    architecture: str | None = None
+    optimizer: str | None = None
+    dataset_version: str | None = None
+    metrics: dict[str, Any] = Field(default_factory=dict)
+    experiment_id: str | None = None
+    stage: str = "none"
+    lifecycle_state: str = "created"
+    tags: list[str] = Field(default_factory=list)
+
+
+class TransitionRequest(BaseModel):
+    kind: str
+    object_id: str
+    target: str
+    reason: str = ""
+
+
+def _gov() -> "GovernanceService":
+    from evonas.application.registry.service import GovernanceService
+
+    return GovernanceService()
+
+
+@router.post("/registry/sync", tags=["registry"])
+def registry_sync() -> dict[str, Any]:
+    return _gov().sync()
+
+
+@router.get("/registry/overview", tags=["registry"])
+def registry_overview() -> dict[str, Any]:
+    return _gov().overview()
+
+
+@router.get("/registry/search", tags=["registry"])
+def registry_search(
+    q: str | None = None,
+    kind: str | None = None,
+    optimizer: str | None = None,
+    dataset_version: str | None = None,
+    version: str | None = None,
+    status: str | None = None,
+    lifecycle_state: str | None = None,
+    limit: int = 100,
+) -> list[dict[str, Any]]:
+    return _gov().search(
+        q=q,
+        kind=kind,
+        optimizer=optimizer,
+        dataset_version=dataset_version,
+        version=version,
+        status=status,
+        lifecycle_state=lifecycle_state,
+        limit=limit,
+    )
+
+
+@router.get("/models", tags=["registry"])
+def models_list(limit: int = 100) -> list[dict[str, Any]]:
+    return _gov().list_models(limit=limit)
+
+
+@router.post("/models", tags=["registry"])
+def models_register(body: RegisterModelRequest) -> dict[str, Any]:
+    return _gov().register_model(body.model_dump())
+
+
+@router.get("/models/compare", tags=["registry"])
+def models_compare(left: str, right: str) -> dict[str, Any]:
+    return _gov().compare(left, right)
+
+
+@router.get("/models/{model_id}", tags=["registry"])
+def models_get(model_id: str, version: str | None = None) -> dict[str, Any]:
+    rec = _gov().get_model(model_id, version)
+    if rec is None:
+        raise HTTPException(status_code=404, detail="model not found")
+    return rec
+
+
+@router.post("/models/{model_id}/versions/{version}/stage", tags=["registry"])
+def models_set_stage(model_id: str, version: str, body: StageRequest) -> dict[str, Any]:
+    try:
+        return _gov().set_stage(model_id, version, body.stage, reason=body.reason)
+    except Exception as exc:  # noqa: BLE001
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+
+
+@router.get("/models/{model_id}/lineage", tags=["registry"])
+def models_lineage(model_id: str) -> dict[str, Any]:
+    return _gov().lineage(model_id)
+
+
+@router.get("/registry/experiments", tags=["registry"])
+def registry_experiments(limit: int = 100) -> list[dict[str, Any]]:
+    return _gov().list_experiments(limit=limit)
+
+
+@router.get("/registry/datasets", tags=["registry"])
+def registry_datasets(limit: int = 100) -> list[dict[str, Any]]:
+    return _gov().list_datasets(limit=limit)
+
+
+@router.get("/registry/artifacts", tags=["registry"])
+def registry_artifacts(limit: int = 100) -> list[dict[str, Any]]:
+    return _gov().list_artifacts(limit=limit)
+
+
+@router.get("/registry/promotions", tags=["registry"])
+def registry_promotions(limit: int = 100) -> list[dict[str, Any]]:
+    return _gov().list_promotions(limit=limit)
+
+
+@router.get("/registry/rollbacks", tags=["registry"])
+def registry_rollbacks(limit: int = 100) -> list[dict[str, Any]]:
+    return _gov().list_rollbacks(limit=limit)
+
+
+@router.get("/registry/lifecycle", tags=["registry"])
+def registry_lifecycle() -> dict[str, Any]:
+    return _gov().lifecycle_graph()
+
+
+@router.post("/registry/lifecycle/transition", tags=["registry"])
+def registry_transition(body: TransitionRequest) -> dict[str, Any]:
+    try:
+        return _gov().transition(body.kind, body.object_id, body.target, reason=body.reason)
+    except Exception as exc:  # noqa: BLE001
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+
+
+@router.get("/registry/history/{object_id}", tags=["registry"])
+def registry_history(object_id: str) -> list[dict[str, Any]]:
+    return _gov().history(object_id)
+
+
+@router.get("/registry/lineage/{object_id}", tags=["registry"])
+def registry_lineage(object_id: str) -> dict[str, Any]:
+    return _gov().lineage(object_id)
+
+
+@router.get("/dashboard/registry", tags=["dashboard"])
+def dash_registry() -> dict[str, Any]:
+    return _gov().dashboard_bundle()

@@ -1,0 +1,45 @@
+# EvoNAS Governance Registry (Phase 11) — metadata only; never mutates experiment results
+registry:
+  root: "artifacts/registry"
+  retention_days: 365
+  max_search_results: 500
+  auto_sync_on_read: true
+
+versioning:
+  model_id_prefix: "mdl"
+  experiment_id_prefix: "exp"
+  dataset_id_prefix: "ds"
+  artifact_id_prefix: "art"
+
+lifecycle:
+  initial: "created"
+  transitions:
+    created: [training, evaluating, archived, deleted]
+    training: [evaluating, failed, archived]
+    evaluating: [candidate, rejected, archived]
+    candidate: [validated, rejected, archived]
+    validated: [promoted, archived, deprecated]
+    promoted: [archived, deprecated, rolled_back]
+    rejected: [archived, deleted]
+    failed: [archived, deleted]
+    archived: [deprecated, deleted]
+    deprecated: [deleted]
+    rolled_back: [archived, deprecated, candidate]
+    deleted: []
+
+stages:
+  # Model registry stages (idea.md §55) — orthogonal to lifecycle above
+  allowed: [none, staging, production, archived]
+  transitions:
+    none: [staging, archived]
+    staging: [production, archived, none]
+    production: [archived, staging]
+    archived: [none]
+
+search:
+  fields: [id, kind, name, optimizer, dataset_version, tags, status, lifecycle_state]
+
+metadata:
+  record_checksum: true
+  include_git: true
+  include_environment: true
