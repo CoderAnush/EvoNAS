@@ -15,5 +15,6 @@ After tagging, fill:
 
 | Field | Value |
 |-------|-------|
-| `v1.0.0` commit SHA | `[PLACEHOLDER: git rev-parse v1.0.0]` |
+| `v1.0.0` commit SHA | `fe15202` (`git rev-parse v1.0.0`) |
 | CI status URL | `[PLACEHOLDER]` |
+| Quality gates at release | ruff ✅ · mypy 188 ✅ · pytest 150 passed |
