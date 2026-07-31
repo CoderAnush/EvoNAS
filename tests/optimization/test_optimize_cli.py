@@ -42,4 +42,4 @@ def test_optimize_cli_dry_run(tmp_path: Path, capsys) -> None:
 
 def test_version_updated(capsys) -> None:
     assert main(["version"]) == 0
-    assert capsys.readouterr().out.strip() == "1.0.0rc2"
+    assert capsys.readouterr().out.strip() == "1.0.0"

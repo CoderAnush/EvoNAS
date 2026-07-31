@@ -1,0 +1,48 @@
+# Phase 12A — Extended budget ablation (matched RS trials = 16×40)
+experiment_id: phase12a_budget_extended
+run_id: phase12a_budget_extended
+seed: 101
+
+algorithms:
+  - standard_pso
+  - sapso
+  - random_search
+
+datasets:
+  - id: sphere
+    landscape: sphere
+    space_path: configs/search_spaces/sphere_2d.yaml
+  - id: rastrigin
+    landscape: rastrigin
+    space_path: configs/search_spaces/sphere_2d.yaml
+
+seeds:
+  n: 10
+  base: 101
+
+configurations:
+  - id: extended
+
+optimization:
+  swarm_size: 16
+  max_iterations: 40
+  w: 0.729
+  c1: 1.49445
+  c2: 1.49445
+  log_particles: false
+
+random_search:
+  n_trials: 640
+
+adaptation: {}
+
+statistics:
+  confidence: 0.95
+  significance_tests: true
+
+fitness:
+  mode: mock
+  sense: maximize
+
+experiment:
+  artifacts_root: artifacts/research

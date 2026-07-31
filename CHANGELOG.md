@@ -5,6 +5,42 @@ All notable changes to EvoNAS are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Notes
+
+- Post-v1.0 work tracked in `docs/ROADMAP.md`
+
+## [v1.0.0] — 2026-07-31
+
+### Added
+
+- Open-source release packaging (Phase 12C)
+- Architecture book + component / deployment / sequence diagrams (`docs/architecture/`)
+- User guides: Quick Start, Installation, CLI, API, Configuration (`docs/guides/`)
+- Static website (`website/`)
+- Demo package v1 (`docs/demo/v1/`)
+- Reproducibility package (`reproducibility/`)
+- Portfolio assets (resume, LinkedIn, pitches)
+- GitHub assets: issue/PR/discussion templates, `SECURITY.md`, `FUNDING.yml`, topics guide
+- Root `CITATION.cff` for v1.0.0
+- Release notes, migration guide, known issues, product roadmap docs
+- Phase 12A experimental protocol, suite configs, campaign runner, research artifacts
+- Phase 12B publication package under `paper/`
+
+### Included from prior RCs (unchanged engines)
+
+- Phases 0–11 platform capabilities (dataset → registry)
+
+### Changed
+
+- Package version **1.0.0** (stable)
+
+### Notes
+
+- Phase 12C does **not** modify PSO/SAPSO/training/closed-loop core implementations
+- Auth / cloud / K8s / neural paper campaigns remain deferred
+
 ## [v1.0.0-rc2] — 2026-07-31
 
 ### Added

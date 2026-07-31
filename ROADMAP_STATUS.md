@@ -14,8 +14,10 @@
 | 9 | Platform Services & Deployment | Done | v0.9.0 |
 | 10 | Scientific Evaluation & Experiments | Done | v1.0.0-rc1 |
 | 11 | AI Governance & Model Registry | Done | v1.0.0-rc2 |
-| 12 | Research extensions | Not started | — |
+| 12A | Experimental Campaign & Scientific Validation | Done | (evidence) |
+| 12B | Publication Package | Done | (docs `paper/`) |
+| 12C | Open Source Release | Done | **v1.0.0** |
 
-**Note:** `idea.md` originally listed Dashboard as Phase 9 and Deployment as Phase 8. Product delivery shipped Dashboard as **v0.8.0 / Phase 8**, Platform Services as **v0.9.0 / Phase 9**, scientific evaluation as **v1.0.0-rc1 / Phase 10**, and governance/registry as **v1.0.0-rc2 / Phase 11**.
+**Note:** Product phase numbering for Dashboard/Platform differs from early `idea.md` drafts; see prior release notes.
 
-**Current release:** v1.0.0-rc2 — governance registry complete; paper drafting / cloud auth deferred.
+**Current release:** **v1.0.0** — open-source stable. Post-1.0: neural campaigns, camera-ready paper, cloud auth deferred (`docs/ROADMAP.md`).

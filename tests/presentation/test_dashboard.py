@@ -126,4 +126,4 @@ def test_cli_dashboard_parser() -> None:
 
 def test_dashboard_version_0_8(capsys) -> None:
     assert main(["version"]) == 0
-    assert capsys.readouterr().out.strip() == "1.0.0rc2"
+    assert capsys.readouterr().out.strip() == "1.0.0"

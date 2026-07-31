@@ -186,4 +186,4 @@ def test_cli_parsers_phase10() -> None:
 
 def test_version_rc1(capsys) -> None:  # type: ignore[no-untyped-def]
     assert main(["version"]) == 0
-    assert capsys.readouterr().out.strip() == "1.0.0rc2"
+    assert capsys.readouterr().out.strip() == "1.0.0"

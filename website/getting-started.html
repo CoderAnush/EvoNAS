@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Getting Started — EvoNAS</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="nav">
+    <a class="brand" href="index.html">EvoNAS</a>
+    <nav>
+      <a href="features.html">Features</a>
+      <a href="docs.html">Docs</a>
+      <a href="architecture.html">Architecture</a>
+      <a href="research.html">Research</a>
+      <a href="getting-started.html">Get Started</a>
+      <a class="ext" href="https://github.com/CoderAnush/EvoNAS">GitHub</a>
+    </nav>
+  </header>
+  <main>
+    <h1>Getting Started</h1>
+    <pre><code>git clone https://github.com/CoderAnush/EvoNAS.git
+cd EvoNAS
+python -m venv .venv
+pip install -e ".[dev]"
+evonas version
+evonas optimize --config configs/pso/adaptive_mock.yaml --dry-run</code></pre>
+    <p>Full guide: <a href="https://github.com/CoderAnush/EvoNAS/blob/main/docs/guides/QUICK_START.md">docs/guides/QUICK_START.md</a></p>
+    <p>Ops UI: <code>pip install -e ".[api,dashboard]" &amp;&amp; evonas serve --demo</code></p>
+  </main>
+</body>
+</html>

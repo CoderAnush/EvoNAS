@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Discussions
+    url: https://github.com/CoderAnush/EvoNAS/discussions
+    about: Q&A, ideas, and show-and-tell (enable Discussions in repo settings).
+  - name: Security
+    url: https://github.com/CoderAnush/EvoNAS/blob/main/SECURITY.md
+    about: Report security concerns privately when possible.

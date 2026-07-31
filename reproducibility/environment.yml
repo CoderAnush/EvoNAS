@@ -1,0 +1,23 @@
+# Environment (conda sketch) — EvoNAS v1.0.0
+
+```yaml
+name: evonas-v1
+channels:
+  - conda-forge
+dependencies:
+  - python=3.10
+  - pip
+  - pip:
+      - -e ..[dev,api,dashboard]
+# Optional heavy:
+#     - -e ..[pytorch]
+```
+
+Create:
+
+```bash
+conda env create -f reproducibility/environment.yml
+conda activate evonas-v1
+```
+
+Or use venv + `pip install -e ".[dev,api,dashboard]"`.

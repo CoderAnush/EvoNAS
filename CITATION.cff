@@ -1,0 +1,36 @@
+cff-version: 1.2.0
+message: "If you use EvoNAS, please cite it using these metadata."
+type: software
+title: "EvoNAS: Autonomous Closed-Loop AutoML Platform using Self-Adaptive PSO"
+version: "1.0.0"
+date-released: "2026-07-31"
+repository-code: "https://github.com/CoderAnush/EvoNAS"
+license: MIT
+authors:
+  - family-names: "[PLACEHOLDER]"
+    given-names: "[PLACEHOLDER]"
+    alias: CoderAnush
+    affiliation: "[PLACEHOLDER]"
+abstract: >-
+  EvoNAS is a Clean-Architecture AutoML and neural architecture search platform
+  that continuously manages model lifecycle with Self-Adaptive Particle Swarm
+  Optimization, closed-loop decision policies, continuous-learning recommendations,
+  a metadata registry, FastAPI services, and a Streamlit operations dashboard.
+  Version 1.0.0 includes a fair research benchmarking framework and Phase 12A
+  experimental evidence on mock Sphere/Rastrigin landscapes.
+keywords:
+  - neural-architecture-search
+  - auto-ml
+  - particle-swarm-optimization
+  - self-adaptive-pso
+  - closed-loop
+  - reproducibility
+preferred-citation:
+  type: generic
+  title: "EvoNAS v1.0.0 — Open Source Release"
+  year: 2026
+  authors:
+    - family-names: "[PLACEHOLDER]"
+      given-names: "[PLACEHOLDER]"
+  url: "https://github.com/CoderAnush/EvoNAS"
+  notes: "Cite software version 1.0.0. For Phase 12A numbers, cite artifacts/research/phase12a_*."

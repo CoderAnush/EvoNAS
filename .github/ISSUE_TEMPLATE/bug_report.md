@@ -2,19 +2,42 @@
 name: Bug report
 about: Report a defect in EvoNAS
 title: "[bug] "
-labels: bug
+labels: ["bug"]
+assignees: []
 ---
 
-**Version** (`evonas version`):
+## Description
 
-**Command / API:**
+A clear description of the bug.
 
-**Expected:**
+## EvoNAS version
 
-**Actual:**
+- [ ] `evonas version` output:
+- [ ] Python version:
+- [ ] OS:
 
-**Config path:**
+## Steps to reproduce
 
-**Logs / traceback:**
+1.
+2.
+3.
 
-**OS / Python:**
+## Expected vs actual
+
+-
+
+## Config / command
+
+```text
+(paste config path or CLI)
+```
+
+## Logs / traceback
+
+```text
+
+```
+
+## Integrity note
+
+If this involves optimizer results, attach `meta.json` / `config_hash` — do not silently edit artifacts.

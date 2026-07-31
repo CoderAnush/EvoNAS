@@ -146,4 +146,4 @@ def test_dashboard_registry_pages_registered() -> None:
 
 def test_version_rc2(capsys) -> None:  # type: ignore[no-untyped-def]
     assert main(["version"]) == 0
-    assert capsys.readouterr().out.strip() == "1.0.0rc2"
+    assert capsys.readouterr().out.strip() == "1.0.0"

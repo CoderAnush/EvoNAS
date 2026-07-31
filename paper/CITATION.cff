@@ -1,0 +1,33 @@
+cff-version: 1.2.0
+message: "If you use EvoNAS or cite Phase 12A results, please cite this software record and the experimental protocol."
+type: software
+title: "EvoNAS: Evolutionary Neural Architecture Search Platform"
+version: "1.0.0rc2"
+date-released: "2026-07-31"
+repository-code: "https://github.com/CoderAnush/EvoNAS"
+license: "MIT"
+authors:
+  - family-names: "[PLACEHOLDER]"
+    given-names: "[PLACEHOLDER]"
+    affiliation: "[PLACEHOLDER]"
+abstract: >-
+  EvoNAS is a Clean-Architecture AutoML/NAS platform with Self-Adaptive PSO,
+  closed-loop governance, and a fair research benchmarking layer. Phase 12A
+  provides multi-seed Sphere/Rastrigin comparisons of Standard PSO, SAPSO,
+  and Random Search on frozen v1.0.0-rc2.
+keywords:
+  - neural architecture search
+  - particle swarm optimization
+  - self-adaptive PSO
+  - AutoML
+  - reproducibility
+preferred-citation:
+  type: generic
+  title: "EvoNAS Phase 12A Experimental Campaign and Phase 12B Publication Package"
+  authors:
+    - family-names: "[PLACEHOLDER]"
+      given-names: "[PLACEHOLDER]"
+  year: 2026
+  notes: >-
+    Empirical numbers must be taken from artifacts/research/phase12a_*.
+    Do not invent neural results.

@@ -1,16 +1,28 @@
 ---
 name: Feature request
-about: Propose an extension that respects idea.md
+about: Propose an enhancement aligned with idea.md
 title: "[feat] "
-labels: enhancement
+labels: ["enhancement"]
+assignees: []
 ---
 
-**Related idea.md section / phase:**
+## Motivation
 
-**Problem:**
+Why is this needed?
 
-**Proposed approach (ports / configs preferred):**
+## idea.md alignment
 
-**Out of scope / non-goals:**
+Which REQ / phase does this relate to?
 
-**Test plan:**
+## Proposed approach
+
+-
+
+## Non-goals
+
+- [ ] Must not rewrite frozen PSO/SAPSO math without explicit approval
+- [ ] Must not wire research baselines into production closed-loop by default
+
+## Alternatives considered
+
+-

@@ -7,7 +7,7 @@ from evonas.presentation.cli.main import main
 
 def test_version(capsys) -> None:
     assert main(["version"]) == 0
-    assert capsys.readouterr().out.strip() == "1.0.0rc2"
+    assert capsys.readouterr().out.strip() == "1.0.0"
 
 
 def test_help_exit_zero() -> None:

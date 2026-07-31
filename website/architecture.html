@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Architecture — EvoNAS</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="nav">
+    <a class="brand" href="index.html">EvoNAS</a>
+    <nav>
+      <a href="features.html">Features</a>
+      <a href="docs.html">Docs</a>
+      <a href="architecture.html">Architecture</a>
+      <a href="research.html">Research</a>
+      <a href="getting-started.html">Get Started</a>
+      <a class="ext" href="https://github.com/CoderAnush/EvoNAS">GitHub</a>
+    </nav>
+  </header>
+  <main>
+    <h1>Architecture</h1>
+    <p class="lede">Clean Architecture under <code>src/evonas/</code>: domain engines behind ports; presentation never owns optimizer math.</p>
+    <div class="card">
+      <h2>Layers</h2>
+      <ul>
+        <li><strong>Domain</strong> — PSO, SAPSO, fitness, closed-loop policies, registry types</li>
+        <li><strong>Application</strong> — use cases &amp; orchestrators</li>
+        <li><strong>Infrastructure</strong> — PyTorch, files, mock fitness, file registry</li>
+        <li><strong>Presentation</strong> — CLI, FastAPI, Streamlit</li>
+        <li><strong>Benchmarks quarantine</strong> — Random Search for research only</li>
+      </ul>
+      <p><a href="https://github.com/CoderAnush/EvoNAS/blob/main/docs/architecture/ARCHITECTURE_BOOK.md">Read the Architecture Book →</a></p>
+    </div>
+  </main>
+</body>
+</html>

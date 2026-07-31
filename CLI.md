@@ -1,4 +1,4 @@
-# CLI.md — EvoNAS Command Reference (v1.0.0-rc2)
+# CLI.md — EvoNAS Command Reference (v1.0.0)
 
 ```text
 evonas version

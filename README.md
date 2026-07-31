@@ -11,14 +11,15 @@ EvoNAS is an **autonomous AI lifecycle management platform** that continuously m
 > The product thesis is **autonomous lifecycle management**; SAPSO is the appointed production search engine.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?logo=python&logoColor=white)](https://www.python.org/)
-[![Status](https://img.shields.io/badge/Status-v1.0.0--rc2%20Governance-brightgreen)](docs/phase_reports/phase11.md)
-[![Version](https://img.shields.io/badge/Version-v1.0.0--rc2-informational)](CHANGELOG.md)
-[![Research](https://img.shields.io/badge/Research-IEEE%20Oriented-0A66C2)](idea.md)
+[![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)](https://www.python.org/)
+[![Status](https://img.shields.io/badge/Status-v1.0.0%20Stable-brightgreen)](docs/RELEASE_NOTES_v1.0.0.md)
+[![Version](https://img.shields.io/badge/Version-v1.0.0-informational)](CHANGELOG.md)
+[![Research](https://img.shields.io/badge/Research-IEEE%20Oriented-0A66C2)](paper/README.md)
 [![AutoML](https://img.shields.io/badge/AutoML-Closed%20Loop-6f42c1)](idea.md)
-[![Deep Learning](https://img.shields.io/badge/Deep%20Learning-PyTorch%20%7C%20TensorFlow-EE4C2C)](idea.md)
-[![Optimization](https://img.shields.io/badge/Optimization-SAPSO%20Only-111111)](idea.md)
+[![Deep Learning](https://img.shields.io/badge/Deep%20Learning-PyTorch-EE4C2C)](idea.md)
+[![Optimization](https://img.shields.io/badge/Optimization-SAPSO-111111)](idea.md)
 [![GitHub](https://img.shields.io/badge/GitHub-CoderAnush%2FEvoNAS-181717?logo=github)](https://github.com/CoderAnush/EvoNAS)
+[![Cite](https://img.shields.io/badge/Cite-CITATION.cff-lightgrey)](CITATION.cff)
 
 ---
 
@@ -486,10 +487,34 @@ Implementation status tracks the Master Specification phases. Checklist items ar
 - [x] CLI / API / dashboard governance pages
 - [x] Phase 11 report (`docs/phase_reports/phase11.md`)
 
-### Phase 12 — Research Extensions
-- [ ] Isolated Grid / Random / Standard PSO baselines
-- [ ] Statistical comparison suite
-- [ ] IEEE protocol assets (`docs/research/`)
+### Phase 12A — Experimental Campaign (frozen platform)
+- [x] `docs/research/experimental_protocol.md`
+- [x] Multi-suite PSO / SAPSO / Random Search campaign
+- [x] Stats, figures, CSV/MD/LaTeX tables, research reports
+- [x] Registry sync of research artifacts (metadata only)
+- [x] Phase 12A report (`docs/phase_reports/phase12a.md`)
+- [ ] Neural (MNIST/CIFAR) campaigns — deferred
+
+### Phase 12B — Publication Package (docs only)
+- [x] IEEE manuscript draft + thesis/technical/research summaries
+- [x] Presentations (10/20/45), poster, conference abstract
+- [x] Figures/tables lists, appendix, BibTeX, CITATION.cff
+- [x] Defense pack + publication checklist
+- [x] Phase 12B report (`docs/phase_reports/phase12b.md`)
+- [ ] Camera-ready IEEE PDF / venue submission — deferred
+
+### Phase 12C — Open Source Release (v1.0.0)
+- [x] Architecture book + component/deployment/sequence diagrams
+- [x] Guides (quick start, install, CLI, API, config)
+- [x] GitHub assets (issues, PR, security, funding, topics, CITATION.cff)
+- [x] Website, demo package, reproducibility package, portfolio assets
+- [x] Release notes, migration guide, known issues, roadmap
+- [x] Tag **v1.0.0**
+
+### Post-1.0
+- [ ] Neural campaigns / stronger baselines (research quarantine)
+- [ ] Camera-ready seed counts / paper submission
+- [ ] Cloud auth / K8s (deferred)
 
 ```mermaid
 flowchart LR
@@ -538,17 +563,16 @@ Quick Mode is required to exercise the **real** controller, Decision Engine, and
 
 ## Installation
 
-> **Status:** **Phase 1 frozen (v0.1.0).** Dataset management is implemented and tested.  
-> Later commands (`run` / `replay` closed-loop) remain planned per [`idea.md`](idea.md).
+> **Status:** **v1.0.0 stable.** Full guide: [`docs/guides/INSTALLATION.md`](docs/guides/INSTALLATION.md).
 
-### Prerequisites (planned)
+### Prerequisites
 
-- Python **3.11+**
+- Python **3.10+**
 - Git
 - Optional: Docker / Docker Compose
-- Optional: CUDA-capable GPU for Research Mode
+- Optional: CUDA-capable GPU for neural training
 
-### Planned install
+### Install
 
 ```bash
 git clone https://github.com/CoderAnush/EvoNAS.git
@@ -559,15 +583,14 @@ python -m venv .venv
 # Unix:    source .venv/bin/activate
 
 pip install -e ".[dev]"
-# Optional: pip install -e ".[pytorch,dashboard,dev]"
+# Optional: pip install -e ".[pytorch,api,dashboard,dev]"
 ```
 
 ### Verify
 
 ```bash
-evonas version
+evonas version   # 1.0.0
 evonas doctor
-evonas prepare-dataset --config configs/datasets/toy_quick.yaml
 pytest -q
 ```
 
@@ -575,25 +598,14 @@ pytest -q
 
 ## Quick Start
 
-> Commands below are **specified** in the engineering bible and will become available as phases complete.  
-> They are documented here for contributors and early adopters — **do not assume they work until the corresponding phase is marked done**.
+> Full guide: [`docs/guides/QUICK_START.md`](docs/guides/QUICK_START.md).
 
-### Planned Quick Mode
-
-```bash
-evonas run --mode quick --config configs/modes/quick.yaml
-```
-
-### Planned Research Mode
+### Smoke (mock)
 
 ```bash
-evonas run --mode research --config configs/modes/research.yaml
-```
-
-### Planned Replay Mode
-
-```bash
-evonas replay --experiment-id exp_YYYYMMDD_HHMMSS_id
+evonas optimize --config configs/pso/adaptive_mock.yaml --dry-run
+evonas simulate-loop --config configs/closed_loop/simulate.yaml --max-cycles 2
+evonas benchmark --config configs/benchmarks/default.yaml
 ```
 
 ### Dashboard / API
@@ -601,9 +613,8 @@ evonas replay --experiment-id exp_YYYYMMDD_HHMMSS_id
 ```bash
 pip install -e ".[api,dashboard,dev]"
 evonas serve --demo
-evonas api --port 8000
 evonas status
-docker compose up --build
+# Optional: docker compose up --build
 ```
 
 ### What exists today
@@ -611,20 +622,21 @@ docker compose up --build
 | Artifact | Availability |
 |---|---|
 | Master Engineering Specification | ✅ [`idea.md`](idea.md) |
-| Public overview | ✅ [`README.md`](README.md) |
-| Installable CLI + dataset pipeline | ✅ Phase 0–1 (`v0.1.0`) |
-| Baseline train / eval / checkpoints | ✅ Phase 2 (`v0.2.0`) |
-| Dynamic architecture → model builder | ✅ Phase 3 (`v0.3.0`) |
-| Standard PSO architecture search | ✅ Phase 4 (`v0.4.0`) |
-| Self-Adaptive PSO (SAPSO) | ✅ Phase 5 (`v0.5.0`) |
-| Closed-loop controller (observe→decide→optimize→validate→promote) | ✅ Phase 6 (`v0.6.0`) |
-| Continuous learning / data evolution | ✅ Phase 7 (`v0.7.0`) |
-| AI Operations Dashboard (Streamlit) | ✅ Phase 8 (`v0.8.0`) |
-| FastAPI + Docker platform services | ✅ Phase 9 (`v0.9.0`) |
-| Scientific evaluation / benchmarks | ✅ Phase 10 (`v1.0.0-rc1`) |
-| Governance / model registry | ✅ Phase 11 (`v1.0.0-rc2`) |
-| Phase reports | ✅ `docs/phase_reports/phase{1..11}.md` |
-| Cloud / auth / paper drafting | ⏳ later |
+| Public overview + website | ✅ [`README.md`](README.md) · [`website/`](website/index.html) |
+| Installable CLI + dataset pipeline | ✅ |
+| Baseline train / eval / checkpoints | ✅ |
+| Dynamic architecture → model builder | ✅ |
+| Standard PSO + SAPSO | ✅ |
+| Closed-loop controller | ✅ |
+| Continuous learning | ✅ |
+| AI Operations Dashboard (Streamlit) | ✅ |
+| FastAPI + Docker platform services | ✅ |
+| Scientific evaluation / benchmarks | ✅ |
+| Governance / model registry | ✅ |
+| Phase 12A experimental campaign | ✅ `artifacts/research/phase12a_*` |
+| Phase 12B publication package | ✅ [`paper/`](paper/README.md) |
+| Phase 12C open-source release | ✅ **v1.0.0** |
+| Cloud / auth / K8s | ⏳ deferred |
 
 ---
 
@@ -643,31 +655,31 @@ docker compose up --build
 | [`docs/phase_reports/phase8.md`](docs/phase_reports/phase8.md) | **Available** | Phase 8 AI Operations Dashboard |
 | [`docs/phase_reports/phase9.md`](docs/phase_reports/phase9.md) | **Available** | Phase 9 platform services |
 | [`docs/phase_reports/phase10.md`](docs/phase_reports/phase10.md) | **Available** | Phase 10 scientific evaluation |
+| [`docs/RELEASE_NOTES_v1.0.0.md`](docs/RELEASE_NOTES_v1.0.0.md) | **Available** | **v1.0.0 release notes** |
+| [`docs/MIGRATION_GUIDE_v1.0.0.md`](docs/MIGRATION_GUIDE_v1.0.0.md) | **Available** | Migration to v1.0.0 |
+| [`docs/KNOWN_ISSUES_v1.0.0.md`](docs/KNOWN_ISSUES_v1.0.0.md) | **Available** | Known issues |
+| [`docs/ROADMAP.md`](docs/ROADMAP.md) | **Available** | Post-v1.0 roadmap |
+| [`docs/guides/`](docs/guides/QUICK_START.md) | **Available** | Quick start / install / CLI / API / config |
+| [`docs/architecture/ARCHITECTURE_BOOK.md`](docs/architecture/ARCHITECTURE_BOOK.md) | **Available** | Architecture book + diagrams |
+| [`website/`](website/index.html) | **Available** | Static project website |
+| [`paper/`](paper/README.md) | **Available** | IEEE / thesis / demo publication package |
+| [`reproducibility/`](reproducibility/README.md) | **Available** | Reproducibility package |
+| [`CITATION.cff`](CITATION.cff) | **Available** | Citation metadata |
+| [`docs/phase_reports/phase12c.md`](docs/phase_reports/phase12c.md) | **Available** | Phase 12C open-source release |
 | [`docs/RELEASE_NOTES_v1.0.0-rc1.md`](docs/RELEASE_NOTES_v1.0.0-rc1.md) | **Available** | v1.0.0-rc1 release notes |
-| [`docs/research/protocol.md`](docs/research/protocol.md) | **Available** | Experimental protocol |
+| [`docs/research/protocol.md`](docs/research/protocol.md) | **Available** | Experimental protocol (Phase 10) |
+| [`docs/research/experimental_protocol.md`](docs/research/experimental_protocol.md) | **Available** | Phase 12A binding campaign protocol |
+| [`docs/phase_reports/phase12a.md`](docs/phase_reports/phase12a.md) | **Available** | Phase 12A campaign report |
 | [`docs/ops/DEPLOYMENT.md`](docs/ops/DEPLOYMENT.md) | **Available** | Local / Docker deploy guide |
 | [`docs/ops/API_REFERENCE.md`](docs/ops/API_REFERENCE.md) | **Available** | REST API reference |
-| [`docs/RELEASE_NOTES_v0.8.0.md`](docs/RELEASE_NOTES_v0.8.0.md) | **Available** | v0.8.0 release notes |
-| [`docs/rc1/`](docs/rc1/README.md) | **Available** | v0.7.0 RC1 freeze package |
-| [`docs/demo/`](docs/demo/DEMO_SCRIPT.md) | **Available** | Professor demo (&lt;10 min) |
-| [`docs/research/`](docs/research/EXPERIMENT_PLAN.md) | **Available** | Research planning (no runs yet) |
-| [`DEVELOPER_GUIDE.md`](DEVELOPER_GUIDE.md) | **Available** | Contributor onboarding |
-| [`CLI.md`](CLI.md) | **Available** | CLI reference |
-| [`CONFIGURATION.md`](CONFIGURATION.md) | **Available** | Config map |
-| [`SYSTEM_WORKFLOW.md`](SYSTEM_WORKFLOW.md) | **Available** | End-to-end workflow |
+| [`docs/demo/v1/`](docs/demo/v1/README.md) | **Available** | v1.0 demo package |
+| [`docs/portfolio/PORTFOLIO_ASSETS.md`](docs/portfolio/PORTFOLIO_ASSETS.md) | **Available** | Resume / LinkedIn / pitches |
 | [`ROADMAP_STATUS.md`](ROADMAP_STATUS.md) | **Available** | Phase status table |
-| [`RELEASE_CHECKLIST.md`](RELEASE_CHECKLIST.md) | **Available** | v0.7.0 release checklist |
-| [`docs/RELEASE_NOTES_v0.2.0.md`](docs/RELEASE_NOTES_v0.2.0.md) | **Available** | v0.2.0 release notes |
-| [`docs/RELEASE_NOTES_v0.3.0.md`](docs/RELEASE_NOTES_v0.3.0.md) | **Available** | v0.3.0 release notes |
-| [`docs/RELEASE_NOTES_v0.4.0.md`](docs/RELEASE_NOTES_v0.4.0.md) | **Available** | v0.4.0 release notes |
-| [`docs/RELEASE_NOTES_v0.5.0.md`](docs/RELEASE_NOTES_v0.5.0.md) | **Available** | v0.5.0 release notes |
-| [`docs/RELEASE_NOTES_v0.6.0.md`](docs/RELEASE_NOTES_v0.6.0.md) | **Available** | v0.6.0 release notes |
-| [`docs/RELEASE_NOTES_v0.7.0.md`](docs/RELEASE_NOTES_v0.7.0.md) | **Available** | v0.7.0 release notes |
-| `ROADMAP.md` | Coming Soon | Phase tracking derived from `idea.md` |
-| `ARCHITECTURE.md` | Coming Soon | Architecture digest for contributors |
-| `CONTRIBUTING.md` | Coming Soon | Contribution process and review standards |
-| `RESEARCH.md` | Coming Soon | Experimental protocol and publication notes |
-| `API.md` | Coming Soon | FastAPI surface reference |
+| `ROADMAP.md` | **Available** | See [`docs/ROADMAP.md`](docs/ROADMAP.md) |
+| `ARCHITECTURE.md` | **Available** | See Architecture Book |
+| `CONTRIBUTING.md` | Coming Soon | Contribution process (PR template exists) |
+| `RESEARCH.md` | **Available** | See `docs/research/` + `paper/` |
+| `API.md` | **Available** | See `docs/ops/API_REFERENCE.md` |
 
 > If any derived document conflicts with `idea.md`, **`idea.md` wins**.
 
